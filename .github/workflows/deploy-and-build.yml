@@ -71,6 +71,7 @@ jobs:
       - name: Copy APK to Web Dist for 1-Click Direct Download
         run: |
           cp apps/citizen_app/android/app/build/outputs/apk/release/Safaai-Saathi.apk apps/citizen_app/dist/Safaai-Saathi.apk
+          cp apps/citizen_app/android/app/build/outputs/apk/release/Safaai-Saathi.apk apps/citizen_app/dist/Safai-Saathi.apk
 
       - name: Deploy to GitHub Pages (gh-pages)
         uses: JamesIves/github-pages-deploy-action@v4
@@ -95,6 +96,8 @@ jobs:
           tag_name: v1.0.0
           name: "Safaai Saathi Android v1.0.0"
           body: "Official Production Android APK for Safaai Saathi Citizen Sanitation Monitoring System (Panchmahal Godhra). Production signed .apk."
-          files: apps/citizen_app/android/app/build/outputs/apk/release/Safaai-Saathi.apk
+          files: |
+            apps/citizen_app/android/app/build/outputs/apk/release/Safaai-Saathi.apk
+            apps/citizen_app/dist/Safai-Saathi.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
