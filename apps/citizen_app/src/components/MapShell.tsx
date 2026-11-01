@@ -59,7 +59,9 @@ onSelectWard?: (ward: Ward) => void;
 onToggleLang?: () => void;
 
 onOpenSettings?: () => void;
-  onFullscreenToggle?: (isFullscreen: boolean) => void;
+
+onFullscreenToggle?: (isFullscreen: boolean) => void;
+
 }
 
 export const MapShell: React.FC<MapShellProps> = ({
@@ -83,7 +85,9 @@ onSelectWard,
 onToggleLang,
 
 onOpenSettings,
-  onFullscreenToggle,
+
+onFullscreenToggle,
+
 }) => {
 
 const t = translations[lang];
@@ -679,15 +683,24 @@ leafletMapRef.current.flyTo(
 // Set sheet state smoothly between 78% screen height and fullscreen map
 
 const setSheetState = useCallback((collapsed: boolean) => {
-    setIsFullscreenMap(collapsed);
-    if (onFullscreenToggle) {
-      onFullscreenToggle(collapsed);
-    }
-    if (sheetRef.current) {
-      sheetRef.current.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)';
-      sheetRef.current.style.transform = collapsed ? 'translateY(calc(100% - 72px))' : 'translateY(0px)';
-    }
-  }, [onFullscreenToggle]);
+
+setIsFullscreenMap(collapsed);
+
+if (onFullscreenToggle) {
+
+onFullscreenToggle(collapsed);
+
+}
+
+if (sheetRef.current) {
+
+sheetRef.current.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)';
+
+sheetRef.current.style.transform = collapsed ? 'translateY(calc(100% - 72px))' : 'translateY(0px)';
+
+}
+
+}, [onFullscreenToggle]);
 
 // Dual Touch & Pointer Handlers for 100% reliability on Android APK & mobile touch screens
 
@@ -1008,94 +1021,48 @@ className="absolute left-0 right-0 bottom-0 z-40 bg-white dark:bg-[#16221B] roun
 >
 
 {/* Top Grab Handle Bar (Touch-optimized with touch-action: none for Android APK) */}
+        <div
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
+          style={{ touchAction: 'none' }}
+          className="w-full pt-3 pb-2 px-4 flex flex-col items-center cursor-grab active:cursor-grabbing select-none touch-none shrink-0"
+        >
+          {/* 1. Header Bar When Sheet is Open (78% View) */}
+          {!isFullscreenMap && (
+            <div className="w-full flex items-center justify-between px-1">
+              <span className="text-[11px] font-bold text-[#566259] dark:text-[#A3B8AA]">
+                📍 {(lang === 'gu' ? ward.nameGu : ward.name).split(' - ')[0]}
+              </span>
 
-<div
+              {/* Central tactile grab notch */}
+              <div className="w-14 h-1.5 bg-[#94A3B8] dark:bg-[#3E5245] rounded-full hover:bg-[#1B7A3F] transition" />
 
-onPointerDown={handlePointerDown}
+              {/* 1-Tap Toggle to Expand Full Map */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSheetState(true);
+                }}
+                className="px-2.5 py-1 rounded-full bg-[#E9F1E6] dark:bg-[#1C2C22] hover:bg-[#D4E8CE] text-[#1B7A3F] dark:text-[#2ECC71] text-[10px] font-bold flex items-center gap-1 active:scale-95 transition shadow-sm"
+                title="Expand Full Map"
+              >
+                <span>{lang === 'gu' ? 'નકશો' : 'Map'}</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
 
-onPointerMove={handlePointerMove}
-
-onPointerUp={handlePointerUp}
-
-onPointerCancel={handlePointerUp}
-
-onTouchStart={handleTouchStart}
-
-onTouchMove={handleTouchMove}
-
-onTouchEnd={handleTouchEnd}
-
-onTouchCancel={handleTouchEnd}
-
-style={{ touchAction: 'none' }}
-
-className="w-full pt-3 pb-2 px-4 flex flex-col items-center cursor-grab active:cursor-grabbing select-none touch-none shrink-0"
-
->
-
-{/* Prominent Grab Handle Pill with Expand/Collapse Action Button */}
-
-<div className="w-full flex items-center justify-between px-2">
-
-<span className="text-[11px] font-bold text-[#566259] dark:text-[#A3B8AA]">
-
-{isFullscreenMap ? '🗺️ Full Map View' : '📍 ' + (lang === 'gu' ? ward.nameGu.split(' - ')[0] : ward.name.split(' - ')[0])}
-
-</span>
-
-{/* Central tactile grab notch */}
-
-<div className="w-14 h-1.5 bg-[#94A3B8] dark:bg-[#3E5245] rounded-full hover:bg-[#1B7A3F] transition" />
-
-{/* 1-Tap Toggle Button for Instant Fullscreen Map or Detail View */}
-
-<button
-
-onClick={(e) => {
-
-e.stopPropagation();
-
-setSheetState(!isFullscreenMap);
-
-}}
-
-className="px-2.5 py-1 rounded-full bg-[#E9F1E6] dark:bg-[#1C2C22] hover:bg-[#D4E8CE] text-[#1B7A3F] dark:text-[#2ECC71] text-[10px] font-bold flex items-center gap-1 active:scale-95 transition shadow-sm"
-
-title={isFullscreenMap ? 'Show Details' : 'Expand Full Map'}
-
->
-
-{isFullscreenMap ? (
-
-<>
-
-<span>{lang === 'gu' ? 'વિગત' : 'Details'}</span>
-
-<ChevronUp className="w-3.5 h-3.5" />
-
-</>
-
-) : (
-
-<>
-
-<span>{lang === 'gu' ? 'નકશો' : 'Map'}</span>
-
-<ChevronDown className="w-3.5 h-3.5" />
-
-</>
-
-)}
-
-</button>
-
-</div>
-
-{/* Collapsed Mode Mini Ticker (Only visible when slid down into Fullscreen Map) */}
+          {/* 2. Collapsed Ticker Bar When in Fullscreen Map (Only 1 Single Details Button!) */}
           {isFullscreenMap && (
             <div
               onClick={() => setSheetState(false)}
-              className="w-full flex items-center justify-between py-2 px-1 cursor-pointer"
+              className="w-full flex items-center justify-between py-1 px-1 cursor-pointer"
             >
               <div className="flex items-center gap-2.5 min-w-0 pr-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#1B7A3F] animate-ping shrink-0" />
@@ -1113,6 +1080,7 @@ title={isFullscreenMap ? 'Show Details' : 'Expand Full Map'}
                   setSheetState(false);
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1B7A3F] text-white text-[11px] font-bold shadow-md hover:bg-[#145E30] active:scale-95 transition shrink-0"
+                title="Show Details"
               >
                 <span>{lang === 'gu' ? 'વિગત' : 'Details'}</span>
                 <ChevronUp className="w-4 h-4" />
