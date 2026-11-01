@@ -59,7 +59,7 @@ onSelectWard?: (ward: Ward) => void;
 onToggleLang?: () => void;
 
 onOpenSettings?: () => void;
-
+  onFullscreenToggle?: (isFullscreen: boolean) => void;
 }
 
 export const MapShell: React.FC<MapShellProps> = ({
@@ -83,7 +83,7 @@ onSelectWard,
 onToggleLang,
 
 onOpenSettings,
-
+  onFullscreenToggle,
 }) => {
 
 const t = translations[lang];
@@ -679,18 +679,15 @@ leafletMapRef.current.flyTo(
 // Set sheet state smoothly between 78% screen height and fullscreen map
 
 const setSheetState = useCallback((collapsed: boolean) => {
-
-setIsFullscreenMap(collapsed);
-
-if (sheetRef.current) {
-
-sheetRef.current.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)';
-
-sheetRef.current.style.transform = collapsed ? 'translateY(calc(100% - 64px))' : 'translateY(0px)';
-
-}
-
-}, []);
+    setIsFullscreenMap(collapsed);
+    if (onFullscreenToggle) {
+      onFullscreenToggle(collapsed);
+    }
+    if (sheetRef.current) {
+      sheetRef.current.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)';
+      sheetRef.current.style.transform = collapsed ? 'translateY(calc(100% - 72px))' : 'translateY(0px)';
+    }
+  }, [onFullscreenToggle]);
 
 // Dual Touch & Pointer Handlers for 100% reliability on Android APK & mobile touch screens
 
@@ -1006,7 +1003,7 @@ transition: isDraggingRef.current ? 'none' : 'transform 0.38s cubic-bezier(0.16,
 
 }}
 
-className="absolute left-0 right-0 bottom-0 z-10 bg-white dark:bg-[#16221B] rounded-t-[32px] shadow-2xl border-t border-[#DCE5D9] dark:border-[#2C3E33] flex flex-col will-change-transform h-[78vh]"
+className="absolute left-0 right-0 bottom-0 z-40 bg-white dark:bg-[#16221B] rounded-t-[32px] shadow-2xl border-t border-[#DCE5D9] dark:border-[#2C3E33] flex flex-col will-change-transform h-[78vh]"
 
 >
 
@@ -1095,46 +1092,36 @@ title={isFullscreenMap ? 'Show Details' : 'Expand Full Map'}
 </div>
 
 {/* Collapsed Mode Mini Ticker (Only visible when slid down into Fullscreen Map) */}
+          {isFullscreenMap && (
+            <div
+              onClick={() => setSheetState(false)}
+              className="w-full flex items-center justify-between py-2 px-1 cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#1B7A3F] animate-ping shrink-0" />
+                <span className="text-xs font-bold text-[#14201A] dark:text-white truncate">
+                  {isCollectedToday
+                    ? (lang === 'gu' ? '✅ કલેક્શન પૂર્ણ' : '✅ Waste Collection Done')
+                    : isDutyOver
+                    ? (lang === 'gu' ? '🏁 વાનની સેવા પૂર્ણ' : '🏁 Van Duty Completed')
+                    : (isNear ? t.arrived : `${t.etaTitle}: ${etaMinutes} ${t.etaMinutes}`)}
+                </span>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSheetState(false);
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1B7A3F] text-white text-[11px] font-bold shadow-md hover:bg-[#145E30] active:scale-95 transition shrink-0"
+              >
+                <span>{lang === 'gu' ? 'વિગત' : 'Details'}</span>
+                <ChevronUp className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
 
-{isFullscreenMap && (
-
-<div className="w-full flex items-center justify-between py-1">
-
-<div className="flex items-center gap-2">
-
-<span className="w-2.5 h-2.5 rounded-full bg-[#1B7A3F] animate-ping shrink-0" />
-
-<span className="text-xs font-bold text-[#14201A] truncate max-w-[240px]">
-
-{isCollectedToday
-
-? (lang === 'gu' ? '✅ કલેક્શન પૂર્ણ' : '✅ Waste Collection Done')
-
-: isDutyOver
-
-? (lang === 'gu' ? '🏁 વાનની સેવા પૂર્ણ' : '🏁 Van Duty Completed')
-
-: (isNear ? t.arrived : `${t.etaTitle}: ${etaMinutes} ${t.etaMinutes}`)}
-
-</span>
-
-</div>
-
-<div className="flex items-center gap-1 text-[11px] font-bold text-[#1B7A3F]">
-
-<span>{lang === 'gu' ? 'વિગત' : 'Details'}</span>
-
-<ChevronUp className="w-3.5 h-3.5" />
-
-</div>
-
-</div>
-
-)}
-
-</div>
-
-{/* Detailed Content inside Bottom Sheet (Directly visible, no scrolling needed) */}
+        {/* Detailed Content inside Bottom Sheet (Directly visible, no scrolling needed) */}
 
 <div className="px-4 pb-24 pt-1 flex flex-col gap-3.5 overflow-y-auto flex-1 overscroll-contain">
 

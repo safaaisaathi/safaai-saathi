@@ -28,664 +28,608 @@ import { OnboardingModal } from './components/OnboardingModal';
 
 import { BellRing } from 'lucide-react';
 
-
-
 export const App: React.FC = () => {
 
-  const [lang, setLang] = useState<Language>(StorageService.getLanguage());
+const [lang, setLang] = useState<Language>(StorageService.getLanguage());
 
-  const [theme, setTheme] = useState<AppTheme>(StorageService.getTheme());
+const [theme, setTheme] = useState<AppTheme>(StorageService.getTheme());
 
-  const [currentTab, setCurrentTab] = useState<NavTab>('map');
+const [currentTab, setCurrentTab] = useState<NavTab>('map');
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
 
-  const [wardId, setWardId] = useState<string>(
+const [wardId, setWardId] = useState<string>(
 
-    StorageService.getSelectedWardId() || SEED_WARDS[0].id
+StorageService.getSelectedWardId() || SEED_WARDS[0].id
 
-  );
+);
 
-  const [vans, setVans] = useState<Van[]>(SEED_VANS);
+const [vans, setVans] = useState<Van[]>(SEED_VANS);
 
-  const [complaints, setComplaints] = useState<Complaint[]>(StorageService.getComplaints());
+const [complaints, setComplaints] = useState<Complaint[]>(StorageService.getComplaints());
 
-  const [userLocation, setUserLocation] = useState<LocationCoords | null>(null);
+const [userLocation, setUserLocation] = useState<LocationCoords | null>(null);
 
+const [isReportOpen, setIsReportOpen] = useState(false);
 
+const [isPostCollectionOpen, setIsPostCollectionOpen] = useState(false);
 
-  const [isReportOpen, setIsReportOpen] = useState(false);
+const [isIntroOpen, setIsIntroOpen] = useState(!StorageService.hasSeenIntro());
 
-  const [isPostCollectionOpen, setIsPostCollectionOpen] = useState(false);
+const [hasReportedMissed, setHasReportedMissed] = useState(
 
-  const [isIntroOpen, setIsIntroOpen] = useState(!StorageService.hasSeenIntro());
+StorageService.hasReportedMissedToday(wardId)
 
-  const [hasReportedMissed, setHasReportedMissed] = useState(
+);
 
-    StorageService.hasReportedMissedToday(wardId)
+const [soundEnabled, setSoundEnabled] = useState(true);
 
-  );
+const [arrivalBanner, setArrivalBanner] = useState<{ visible: boolean; message: string }>({
 
-  const [soundEnabled, setSoundEnabled] = useState(true);
+visible: false,
 
-  const [arrivalBanner, setArrivalBanner] = useState<{ visible: boolean; message: string }>({
+message: '',
 
-    visible: false,
+});
 
-    message: '',
+// Auto-dismiss arrival toast after 6.5 seconds so it never lingers or annoys the user
 
-  });
+useEffect(() => {
 
+if (arrivalBanner.visible) {
 
+const timer = setTimeout(() => {
 
-  // Auto-dismiss arrival toast after 6.5 seconds so it never lingers or annoys the user
+setArrivalBanner({ visible: false, message: '' });
 
-  useEffect(() => {
+}, 6500);
 
-    if (arrivalBanner.visible) {
+return () => clearTimeout(timer);
 
-      const timer = setTimeout(() => {
+}
 
-        setArrivalBanner({ visible: false, message: '' });
+}, [arrivalBanner.visible]);
 
-      }, 6500);
+const t = translations[lang];
 
-      return () => clearTimeout(timer);
+const [wards, setWards] = useState<Ward[]>(() => StorageService.getWards());
 
-    }
+const selectedWard = wards.find(w => w.id === wardId) || wards[0] || SEED_WARDS[0];
 
-  }, [arrivalBanner.visible]);
+useEffect(() => {
 
+const handleWardsUpdate = () => {
 
+setWards(StorageService.getWards());
 
-  const t = translations[lang];
+};
 
-  const [wards, setWards] = useState<Ward[]>(() => StorageService.getWards());
-  const selectedWard = wards.find(w => w.id === wardId) || wards[0] || SEED_WARDS[0];
+window.addEventListener('safai_sathi_wards_updated', handleWardsUpdate);
 
-  useEffect(() => {
-    const handleWardsUpdate = () => {
-      setWards(StorageService.getWards());
-    };
-    window.addEventListener('safai_sathi_wards_updated', handleWardsUpdate);
-    return () => {
-      window.removeEventListener('safai_sathi_wards_updated', handleWardsUpdate);
-    };
-  }, []);
+return () => {
 
+window.removeEventListener('safai_sathi_wards_updated', handleWardsUpdate);
 
+};
 
-  // Theme Management (Light / Dark / System Default)
+}, []);
 
-  useEffect(() => {
+// Theme Management (Light / Dark / System Default)
 
-    const root = document.documentElement;
+useEffect(() => {
 
+const root = document.documentElement;
 
+const applyThemePreference = (selectedTheme: AppTheme) => {
 
-    const applyThemePreference = (selectedTheme: AppTheme) => {
+let isDark = false;
 
-      let isDark = false;
+if (selectedTheme === 'dark') {
 
-      if (selectedTheme === 'dark') {
+isDark = true;
 
-        isDark = true;
+} else if (selectedTheme === 'light') {
 
-      } else if (selectedTheme === 'light') {
+isDark = false;
 
-        isDark = false;
+} else {
 
-      } else {
+// System preference
 
-        // System preference
+isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-        isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
 
-      }
+if (isDark) {
 
+root.classList.add('dark');
 
+} else {
 
-      if (isDark) {
+root.classList.remove('dark');
 
-        root.classList.add('dark');
+}
 
-      } else {
+};
 
-        root.classList.remove('dark');
+applyThemePreference(theme);
 
-      }
+// Listen to OS system theme changes if theme === 'system'
 
-    };
+if (theme === 'system' && window.matchMedia) {
 
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
+const handleChange = () => applyThemePreference('system');
 
-    applyThemePreference(theme);
+mediaQuery.addEventListener('change', handleChange);
 
+return () => mediaQuery.removeEventListener('change', handleChange);
 
+}
 
-    // Listen to OS system theme changes if theme === 'system'
+}, [theme]);
 
-    if (theme === 'system' && window.matchMedia) {
+// Auto-retry pending offline tickets on app startup & restore
 
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+useEffect(() => {
 
-      const handleChange = () => applyThemePreference('system');
+StorageService.retryPendingSync();
 
-      mediaQuery.addEventListener('change', handleChange);
+}, []);
 
-      return () => mediaQuery.removeEventListener('change', handleChange);
+// Request browser geolocation on boot
 
-    }
+useEffect(() => {
 
-  }, [theme]);
+if (navigator.geolocation) {
 
+navigator.geolocation.getCurrentPosition(
 
+pos => {
 
-  // Auto-retry pending offline tickets on app startup & restore
+setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
 
-  useEffect(() => {
+},
 
-    StorageService.retryPendingSync();
+_err => {
 
-  }, []);
+setUserLocation({ lat: 22.7758, lng: 73.6149 });
 
+},
 
+{ enableHighAccuracy: true, timeout: 5000 }
 
-  // Request browser geolocation on boot
+);
 
-  useEffect(() => {
+}
 
-    if (navigator.geolocation) {
+}, []);
 
-      navigator.geolocation.getCurrentPosition(
+// Live Van GPS Simulation Engine
 
-        pos => {
+useEffect(() => {
 
-          setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+VanSimulationEngine.startSimulation(3500);
 
-        },
+const unsubVans = VanSimulationEngine.onVansUpdate(updatedVans => {
 
-        _err => {
+setVans(updatedVans);
 
-          setUserLocation({ lat: 22.7758, lng: 73.6149 });
+});
 
-        },
+// 1. Van Arrival Alert: Informs citizen that collection has started in the ward
 
-        { enableHighAccuracy: true, timeout: 5000 }
+const unsubArrival = VanSimulationEngine.onArrivalAlert((alertWardId, van) => {
 
-      );
+if (alertWardId === wardId) {
 
-    }
+setArrivalBanner({
 
-  }, []);
+visible: true,
 
+message:
 
+lang === 'gu'
 
-  // Live Van GPS Simulation Engine
+? `🚨 સફાઈ વાન (${van.plateNo}) તમારા વિસ્તારમાં પહોંચી ગઈ છે!`
 
-  useEffect(() => {
+: `🚨 Sanitation Van (${van.plateNo}) has entered your area!`,
 
-    VanSimulationEngine.startSimulation(3500);
+});
 
+// Note: Do NOT ask if waste was handed over in the beginning; duty is still active.
 
+}
 
-    const unsubVans = VanSimulationEngine.onVansUpdate(updatedVans => {
+});
 
-      setVans(updatedVans);
+// 2. Van Duty Completed Alert: ONLY prompts citizen after van's duty in this ward is officially over
 
-    });
+const unsubDuty = VanSimulationEngine.onDutyCompleted((completedWardId, van) => {
 
+if (completedWardId === wardId) {
 
+setArrivalBanner({
 
-    // 1. Van Arrival Alert: Informs citizen that collection has started in the ward
+visible: true,
 
-    const unsubArrival = VanSimulationEngine.onArrivalAlert((alertWardId, van) => {
+message:
 
-      if (alertWardId === wardId) {
+lang === 'gu'
 
-        setArrivalBanner({
+? `🏁 સફાઈ વાન (${van.plateNo}) ની આજની કલેક્શન સેવા સંપન્ન થઈ છે.`
 
-          visible: true,
+: `🏁 Sanitation Van (${van.plateNo}) has completed today's collection duty in your area.`,
 
-          message:
+});
 
-            lang === 'gu'
+// Trigger verification audit modal ONLY once duty has concluded
 
-              ? `🚨 સફાઈ વાન (${van.plateNo}) તમારા વિસ્તારમાં પહોંચી ગઈ છે!`
+if (!StorageService.hasAnsweredFeedbackToday(wardId)) {
 
-              : `🚨 Sanitation Van (${van.plateNo}) has entered your area!`,
+setTimeout(() => {
 
-        });
+setIsPostCollectionOpen(true);
 
-        // Note: Do NOT ask if waste was handed over in the beginning; duty is still active.
+}, 1500);
 
-      }
+}
 
-    });
+}
 
+});
 
+return () => {
 
-    // 2. Van Duty Completed Alert: ONLY prompts citizen after van's duty in this ward is officially over
+unsubVans();
 
-    const unsubDuty = VanSimulationEngine.onDutyCompleted((completedWardId, van) => {
+unsubArrival();
 
-      if (completedWardId === wardId) {
+unsubDuty();
 
-        setArrivalBanner({
+};
 
-          visible: true,
+}, [wardId, lang]);
 
-          message:
+// Ensure simulation lifecycle unmounts only when the citizen app is closed
 
-            lang === 'gu'
+useEffect(() => {
 
-              ? `🏁 સફાઈ વાન (${van.plateNo}) ની આજની કલેક્શન સેવા સંપન્ન થઈ છે.`
+return () => {
 
-              : `🏁 Sanitation Van (${van.plateNo}) has completed today's collection duty in your area.`,
+VanSimulationEngine.stopSimulation();
 
-        });
+};
 
+}, []);
 
+const handleToggleLang = () => {
 
-        // Trigger verification audit modal ONLY once duty has concluded
+const nextLang = lang === 'gu' ? 'en' : 'gu';
 
-        if (!StorageService.hasAnsweredFeedbackToday(wardId)) {
+setLang(nextLang);
 
-          setTimeout(() => {
+StorageService.setLanguage(nextLang);
 
-            setIsPostCollectionOpen(true);
+};
 
-          }, 1500);
+const handleThemeChange = (newTheme: AppTheme) => {
 
-        }
+setTheme(newTheme);
 
-      }
+StorageService.setTheme(newTheme);
 
-    });
+};
 
+const handleWardChange = (newWardId: string) => {
 
+setWardId(newWardId);
 
-    return () => {
+StorageService.setSelectedWardId(newWardId);
 
-      unsubVans();
+setHasReportedMissed(StorageService.hasReportedMissedToday(newWardId));
 
-      unsubArrival();
+};
 
-      unsubDuty();
+const handleComplaintCreated = (newComplaint: Complaint) => {
 
-    };
+setComplaints(prev => [newComplaint, ...prev]);
 
-  }, [wardId, lang]);
+};
 
+const handleComplaintResolved = (complaintId: string, resolvedPhotoUrl: string, note?: string) => {
 
+StorageService.markComplaintResolved(complaintId, resolvedPhotoUrl, note);
 
-  // Ensure simulation lifecycle unmounts only when the citizen app is closed
+setComplaints(prev =>
 
-  useEffect(() => {
+prev.map(c =>
 
-    return () => {
+c.id === complaintId
 
-      VanSimulationEngine.stopSimulation();
+? {
 
-    };
+...c,
 
-  }, []);
+status: 'resolved',
 
+resolvedPhotoUrl,
 
+resolvedAt: new Date().toISOString(),
 
-  const handleToggleLang = () => {
+resolvedNote: note,
 
-    const nextLang = lang === 'gu' ? 'en' : 'gu';
+}
 
-    setLang(nextLang);
+: c
 
-    StorageService.setLanguage(nextLang);
+)
 
-  };
+);
 
+};
 
+const handleReportMissedVan = () => {
 
-  const handleThemeChange = (newTheme: AppTheme) => {
+if (hasReportedMissed) return;
 
-    setTheme(newTheme);
+const missedComplaint: Complaint = {
 
-    StorageService.setTheme(newTheme);
+id: 'cmp_missed_' + Date.now().toString(36),
 
-  };
+ticketId: `PMH-${new Date().getFullYear()}${(new Date().getMonth() + 1).toString().padStart(2, '0')}${new Date().getDate().toString().padStart(2, '0')}-${Math.floor(1000 + Math.random() * 9000)}`,
 
+deviceId: StorageService.getDeviceId(),
 
+category: 'missed_collection',
 
-  const handleWardChange = (newWardId: string) => {
+address: StorageService.getCitizenAddress(),
 
-    setWardId(newWardId);
+photoUrl: '',
 
-    StorageService.setSelectedWardId(newWardId);
+location: userLocation || selectedWard.center,
 
-    setHasReportedMissed(StorageService.hasReportedMissedToday(newWardId));
+wardId: selectedWard.id,
 
-  };
+createdAt: new Date().toISOString(),
 
+status: 'received',
 
+assignedTo: selectedWard.inspectorId,
 
-  const handleComplaintCreated = (newComplaint: Complaint) => {
+assignedName: selectedWard.inspectorName,
 
-    setComplaints(prev => [newComplaint, ...prev]);
+assignedPhone: selectedWard.inspectorPhone,
 
-  };
+escalationLevel: 0,
 
+note: 'Doorstep collection missed for today.',
 
+slaDeadline: new Date(Date.now() + 24 * 3600 * 1000).toISOString(),
 
-  const handleComplaintResolved = (complaintId: string, resolvedPhotoUrl: string, note?: string) => {
+};
 
-    StorageService.markComplaintResolved(complaintId, resolvedPhotoUrl, note);
+StorageService.saveComplaint(missedComplaint);
 
-    setComplaints(prev =>
+StorageService.markReportedMissedToday(wardId);
 
-      prev.map(c =>
+setHasReportedMissed(true);
 
-        c.id === complaintId
+setComplaints(prev => [missedComplaint, ...prev]);
 
-          ? {
+};
 
-              ...c,
+return (
 
-              status: 'resolved',
+<div className="relative w-full h-[100dvh] bg-[#F3F6F2] dark:bg-[#0E1612] text-[#14201A] dark:text-[#EAF2E6] flex flex-col overflow-hidden select-none font-sans transition-colors duration-200">
 
-              resolvedPhotoUrl,
+{/* Top Arrival Alert Toast Banner */}
 
-              resolvedAt: new Date().toISOString(),
+{arrivalBanner.visible && (
 
-              resolvedNote: note,
+<div className="absolute top-16 left-4 right-4 z-50 max-w-md mx-auto bg-[#111A14]/95 dark:bg-[#16221B]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-2xl border border-[#1B7A3F]/50 flex items-center justify-between transition-all duration-300">
 
-            }
+<div className="flex items-center gap-2.5 min-w-0 pr-2">
 
-          : c
+<div className="w-7 h-7 rounded-full bg-[#1B7A3F]/30 flex items-center justify-center shrink-0">
 
-      )
+<BellRing className="w-4 h-4 text-[#2ECC71] shrink-0" />
 
-    );
+</div>
 
-  };
+<p className="text-xs font-semibold leading-tight truncate">
 
+{arrivalBanner.message}
 
+</p>
 
-  const handleReportMissedVan = () => {
+</div>
 
-    if (hasReportedMissed) return;
+<button
 
+onClick={() => setArrivalBanner({ visible: false, message: '' })}
 
+className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white flex items-center justify-center shrink-0 text-xs transition-colors"
 
-    const missedComplaint: Complaint = {
+title="Dismiss"
 
-      id: 'cmp_missed_' + Date.now().toString(36),
+>
 
-      ticketId: `PMH-${new Date().getFullYear()}${(new Date().getMonth() + 1).toString().padStart(2, '0')}${new Date().getDate().toString().padStart(2, '0')}-${Math.floor(1000 + Math.random() * 9000)}`,
+✕
 
-      deviceId: StorageService.getDeviceId(),
+</button>
 
-      category: 'missed_collection',
+</div>
 
-      address: StorageService.getCitizenAddress(),
+)}
 
-      photoUrl: '',
+{/* Main Content Area based on Tab */}
 
-      location: userLocation || selectedWard.center,
+<main className="flex-1 w-full h-full relative overflow-y-auto">
 
-      wardId: selectedWard.id,
+{currentTab === 'map' && (
 
-      createdAt: new Date().toISOString(),
+<MapShell
 
-      status: 'received',
+ward={selectedWard}
 
-      assignedTo: selectedWard.inspectorId,
+vans={vans}
 
-      assignedName: selectedWard.inspectorName,
+userLocation={userLocation}
 
-      assignedPhone: selectedWard.inspectorPhone,
+lang={lang}
 
-      escalationLevel: 0,
+onReportMissedVan={handleReportMissedVan}
 
-      note: 'Doorstep collection missed for today.',
+hasReportedMissed={hasReportedMissed}
 
-      slaDeadline: new Date(Date.now() + 24 * 3600 * 1000).toISOString(),
+onOpenPostCollection={() => setIsPostCollectionOpen(true)}
 
-    };
+onSelectWard={(w) => setWardId(w.id)}
 
+onToggleLang={handleToggleLang}
 
+onOpenSettings={() => setCurrentTab('settings')}
+            onFullscreenToggle={setIsMapFullscreen}
 
-    StorageService.saveComplaint(missedComplaint);
+/>
 
-    StorageService.markReportedMissedToday(wardId);
+)}
 
-    setHasReportedMissed(true);
+{currentTab === 'complaints' && (
 
-    setComplaints(prev => [missedComplaint, ...prev]);
+<MyComplaintsView
 
-  };
+complaints={complaints}
 
+lang={lang}
 
+onOpenReport={() => setIsReportOpen(true)}
 
-  return (
+onComplaintResolved={handleComplaintResolved}
 
-    <div className="relative w-full h-[100dvh] bg-[#F3F6F2] dark:bg-[#0E1612] text-[#14201A] dark:text-[#EAF2E6] flex flex-col overflow-hidden select-none font-sans transition-colors duration-200">
+onComplaintUpdated={(updated) => {
 
-      {/* Top Arrival Alert Toast Banner */}
+StorageService.saveComplaintLocally(updated);
 
-      {arrivalBanner.visible && (
+setComplaints(StorageService.getComplaints());
 
-        <div className="absolute top-16 left-4 right-4 z-50 max-w-md mx-auto bg-[#111A14]/95 dark:bg-[#16221B]/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-2xl border border-[#1B7A3F]/50 flex items-center justify-between transition-all duration-300">
+}}
 
-          <div className="flex items-center gap-2.5 min-w-0 pr-2">
+/>
 
-            <div className="w-7 h-7 rounded-full bg-[#1B7A3F]/30 flex items-center justify-center shrink-0">
+)}
 
-              <BellRing className="w-4 h-4 text-[#2ECC71] shrink-0" />
+{currentTab === 'settings' && (
 
-            </div>
+<SettingsView
 
-            <p className="text-xs font-semibold leading-tight truncate">
+currentWardId={wardId}
 
-              {arrivalBanner.message}
+onWardChange={handleWardChange}
 
-            </p>
+lang={lang}
 
-          </div>
+onLanguageChange={newLang => {
 
-          <button
+setLang(newLang);
 
-            onClick={() => setArrivalBanner({ visible: false, message: '' })}
+StorageService.setLanguage(newLang);
 
-            className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white flex items-center justify-center shrink-0 text-xs transition-colors"
+}}
 
-            title="Dismiss"
+theme={theme}
 
-          >
+onThemeChange={handleThemeChange}
 
-            ✕
+onOpenIntro={() => setIsIntroOpen(true)}
 
-          </button>
+/>
 
-        </div>
+)}
 
-      )}
+</main>
 
+{/* Floating Pill Bottom Navigation */}
 
-
-      {/* Main Content Area based on Tab */}
-
-      <main className="flex-1 w-full h-full relative overflow-y-auto">
-
-        {currentTab === 'map' && (
-
-          <MapShell
-
-            ward={selectedWard}
-
-            vans={vans}
-
-            userLocation={userLocation}
-
-            lang={lang}
-
-            onReportMissedVan={handleReportMissedVan}
-
-            hasReportedMissed={hasReportedMissed}
-
-            onOpenPostCollection={() => setIsPostCollectionOpen(true)}
-
-            onSelectWard={(w) => setWardId(w.id)}
-
-            onToggleLang={handleToggleLang}
-
-            onOpenSettings={() => setCurrentTab('settings')}
-
-          />
-
-        )}
-
-
-
-        {currentTab === 'complaints' && (
-
-          <MyComplaintsView
-
-            complaints={complaints}
-
-            lang={lang}
-
-            onOpenReport={() => setIsReportOpen(true)}
-
-            onComplaintResolved={handleComplaintResolved}
-
-            onComplaintUpdated={(updated) => {
-
-              StorageService.saveComplaintLocally(updated);
-
-              setComplaints(StorageService.getComplaints());
-
-            }}
-
-          />
-
-        )}
-
-
-
-        {currentTab === 'settings' && (
-
-          <SettingsView
-
-            currentWardId={wardId}
-
-            onWardChange={handleWardChange}
-
-            lang={lang}
-
-            onLanguageChange={newLang => {
-
-              setLang(newLang);
-
-              StorageService.setLanguage(newLang);
-
-            }}
-
-            theme={theme}
-
-            onThemeChange={handleThemeChange}
-
-            onOpenIntro={() => setIsIntroOpen(true)}
-
-          />
-
-        )}
-
-      </main>
-
-
-
-      {/* Floating Pill Bottom Navigation */}
-
-      <PillNav
-
+<PillNav
         currentTab={currentTab}
-
-        onSelectTab={setCurrentTab}
-
+        onSelectTab={(tab) => {
+          setCurrentTab(tab);
+          if (tab !== 'map') {
+            setIsMapFullscreen(false);
+          }
+        }}
         complaintsCount={complaints.filter(c => c.status !== 'resolved').length}
-
         lang={lang}
-
+        hidden={currentTab === 'map' && isMapFullscreen}
       />
 
+{/* Screen U2: Report Problem Modal */}
 
+<ReportProblemSheet
 
-      {/* Screen U2: Report Problem Modal */}
+isOpen={isReportOpen}
 
-      <ReportProblemSheet
+onClose={() => setIsReportOpen(false)}
 
-        isOpen={isReportOpen}
+wardId={wardId}
 
-        onClose={() => setIsReportOpen(false)}
+lang={lang}
 
-        wardId={wardId}
+userLocation={userLocation}
 
-        lang={lang}
+onComplaintCreated={handleComplaintCreated}
 
-        userLocation={userLocation}
+onViewComplaints={() => {
 
-        onComplaintCreated={handleComplaintCreated}
+setIsReportOpen(false);
 
-        onViewComplaints={() => {
+setCurrentTab('complaints');
 
-          setIsReportOpen(false);
+}}
 
-          setCurrentTab('complaints');
+/>
 
-        }}
+{/* Post-Collection Verification Modal ("Did you add garbage?") */}
 
-      />
+<PostCollectionModal
 
+isOpen={isPostCollectionOpen}
 
+wardId={wardId}
 
-      {/* Post-Collection Verification Modal ("Did you add garbage?") */}
+onClose={() => setIsPostCollectionOpen(false)}
 
-      <PostCollectionModal
+onSubmitSuccess={() => {}}
 
-        isOpen={isPostCollectionOpen}
+lang={lang}
 
-        wardId={wardId}
+/>
 
-        onClose={() => setIsPostCollectionOpen(false)}
+{/* Onboarding / App Introduction Walkthrough */}
 
-        onSubmitSuccess={() => {}}
+<OnboardingModal
 
-        lang={lang}
+isOpen={isIntroOpen}
 
-      />
+onClose={() => {
 
+StorageService.setHasSeenIntro(true);
 
+setIsIntroOpen(false);
 
-      {/* Onboarding / App Introduction Walkthrough */}
+}}
 
-      <OnboardingModal
+lang={lang}
 
-        isOpen={isIntroOpen}
+onToggleLang={handleToggleLang}
 
-        onClose={() => {
+/>
 
-          StorageService.setHasSeenIntro(true);
+</div>
 
-          setIsIntroOpen(false);
-
-        }}
-
-        lang={lang}
-
-        onToggleLang={handleToggleLang}
-
-      />
-
-    </div>
-
-  );
+);
 
 };
 
