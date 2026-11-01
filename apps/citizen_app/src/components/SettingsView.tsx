@@ -346,6 +346,43 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             : (lang === 'gu' ? '⚡ વાનની ડ્યૂટી સંપન્ન સિમ્યુલેટ કરો' : '⚡ Simulate Van Duty Completed (Show Prompt)')}
         </button>
       </div>
+
+      {/* 8. Web App Sync & Cache Buster */}
+      <div className="bg-[#F3F6F2] dark:bg-[#1A261F] p-4 rounded-[24px] border border-[#DCE5D9] dark:border-[#2A3B31] flex flex-col gap-2.5">
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#566259] dark:text-[#9DB0A2]">
+            {lang === 'gu' ? 'વેબ એપ આવૃત્તિ અને કેશ ક્લિયર' : 'Web App Version & Cache Sync'}
+          </span>
+          <span className="text-[10px] font-bold bg-[#E4F1DF] dark:bg-[#1F3A2A] text-[#1B7A3F] dark:text-[#6DB36F] px-2 py-0.5 rounded-full">
+            v1.3.0 Live Sync
+          </span>
+        </div>
+        <p className="text-[11px] text-[#566259] dark:text-[#9DB0A2] leading-relaxed">
+          {lang === 'gu'
+            ? 'જો બ્રાઉઝરમાં જૂના પેજ દેખાતા હોય, તો નીચેનું બટન દબાવી કેશ ક્લિયર કરી નવું વર્ઝન તરત મેળવો.'
+            : 'If your mobile browser is caching an older version of the web app, tap below to clear cache and reload the latest build.'}
+        </p>
+        <button
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                  for (const reg of registrations) reg.unregister();
+                });
+              }
+              if ('caches' in window) {
+                caches.keys().then(names => {
+                  for (const name of names) caches.delete(name);
+                });
+              }
+              window.location.reload();
+            }
+          }}
+          className="w-full py-2.5 px-4 rounded-xl bg-[#111A14] dark:bg-[#F2F7EE] text-white dark:text-[#111A14] text-xs font-bold transition flex items-center justify-center gap-2 active:scale-95 shadow"
+        >
+          🔄 {lang === 'gu' ? 'તાજો ડેટા મેળવો (Clear Cache & Reload)' : 'Force Reload Latest Web App'}
+        </button>
+      </div>
     </div>
   );
 };

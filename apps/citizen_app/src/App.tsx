@@ -275,12 +275,13 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Floating Pill Bottom Navigation */}
+      {/* Floating Pill Bottom Navigation with 1-Tap Center Report Button */}
       <PillNav
         currentTab={currentTab}
         onSelectTab={setCurrentTab}
         complaintsCount={complaints.filter(c => c.status !== 'resolved').length}
         lang={lang}
+        onOpenReport={() => setIsReportOpen(true)}
       />
 
       {/* Screen U2: Report Problem Modal */}
