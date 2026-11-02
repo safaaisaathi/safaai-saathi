@@ -42,8 +42,10 @@ export const arrivalAlert = functions.firestore
         if (wardDoc.exists) {
           const wardData = wardDoc.data()!;
           const dist = getDistanceMeters(lastLocation, wardData.center);
+          const wardRadiusM = typeof wardData.radiusM === 'number' ? wardData.radiusM : 300;
 
-          if (dist <= CONSTANTS.ARRIVAL_ALERT_RADIUS_M) {
+          // CHG-0007: measure from ward boundary: dist <= radiusM + ARRIVAL_ALERT_RADIUS_M (100m)
+          if (dist <= wardRadiusM + CONSTANTS.ARRIVAL_ALERT_RADIUS_M) {
             // Send FCM push to ward topic
             await admin.messaging().send({
               topic: `ward_${wardId}`,
@@ -609,4 +611,143 @@ export const markWardDutyCompleted = functions.https.onCall(async (data, context
   }, { merge: true });
 
   return { success: true, wardId, status: 'completed', isDutyOver: true };
+});
+
+
+/**
+ * 14. bootstrapUserSession: Callable function for User App (Citizen App)
+ * Contract: CHG-0003 & 02-contracts/callables.json
+ * Input: { deviceId: string, wardId: string }
+ * Output: { token: string, deviceId: string, routeId: string }
+ */
+export const bootstrapUserSession = functions.https.onCall(async (data, context) => {
+  const { deviceId, wardId } = data || {};
+  if (!deviceId || typeof deviceId !== 'string' || !wardId || typeof wardId !== 'string') {
+    throw new functions.https.HttpsError('invalid-argument', 'deviceId and wardId must be non-empty strings');
+  }
+
+  const cleanDeviceId = deviceId.trim();
+  const cleanWardId = wardId.trim();
+
+  const wardDoc = await db.collection('wards').doc(cleanWardId).get();
+  if (!wardDoc.exists) {
+    throw new functions.https.HttpsError('not-found', 'Ward not found: ' + cleanWardId);
+  }
+
+  const wardData = wardDoc.data()!;
+  const routeId = wardData.routeId;
+  if (!routeId) {
+    throw new functions.https.HttpsError('failed-precondition', 'Ward ' + cleanWardId + ' has no assigned routeId');
+  }
+
+  const token = await admin.auth().createCustomToken(cleanDeviceId, {
+    deviceId: cleanDeviceId,
+    routeId,
+  });
+
+  return {
+    token,
+    deviceId: cleanDeviceId,
+    routeId,
+  };
+});
+
+/**
+ * 15. bindDeviceToVan: Callable function for Driver App
+ * Contract: CHG-0003 & 02-contracts/callables.json
+ * Input: { driverCode: string, installId: string }
+ * Output: { token: string, vanId: string, driverId: string, claimMode: string }
+ */
+export const bindDeviceToVan = functions.https.onCall(async (data, context) => {
+  const { driverCode, installId } = data || {};
+  if (!driverCode || typeof driverCode !== 'string' || !installId || typeof installId !== 'string') {
+    throw new functions.https.HttpsError('invalid-argument', 'driverCode and installId must be non-empty strings');
+  }
+
+  const cleanDriverCode = driverCode.trim().toUpperCase();
+  const cleanInstallId = installId.trim();
+
+  const driverDoc = await db.collection('drivers').doc(cleanDriverCode).get();
+  if (!driverDoc.exists) {
+    throw new functions.https.HttpsError('not-found', 'Driver not found with code: ' + cleanDriverCode);
+  }
+
+  const driverData = driverDoc.data()!;
+  const vanId = driverData.vanId;
+  if (!vanId) {
+    throw new functions.https.HttpsError('failed-precondition', 'Driver has no assigned vanId');
+  }
+
+  const vanDeviceRef = db.collection('vanDevices').doc(vanId);
+  const vanDeviceDoc = await vanDeviceRef.get();
+  let claimMode = 'firstClaim';
+
+  if (vanDeviceDoc.exists) {
+    const vdData = vanDeviceDoc.data()!;
+    if (vdData.installId && vdData.installId !== cleanInstallId) {
+      throw new functions.https.HttpsError('already-exists', 'Van already claimed by another device install');
+    }
+    claimMode = vdData.claimMode || 'firstClaim';
+  } else {
+    await vanDeviceRef.set({
+      installId: cleanInstallId,
+      boundAt: admin.firestore.Timestamp.now(),
+      boundBy: cleanDriverCode,
+      claimMode: 'firstClaim',
+    });
+  }
+
+  const token = await admin.auth().createCustomToken('driver_' + vanId, {
+    vanId,
+    driverId: cleanDriverCode,
+  });
+
+  return {
+    token,
+    vanId,
+    driverId: cleanDriverCode,
+    claimMode,
+  };
+});
+
+/**
+ * 16. mintStaffToken: Callable function for Admin Web Dashboard
+ * Contract: CHG-0003 & 02-contracts/callables.json
+ * Input: { staffId: string }
+ * Output: { token: string, role: string, staffId: string, wardIds: string[], scopeRefreshedAt: string }
+ */
+export const mintStaffToken = functions.https.onCall(async (data, context) => {
+  const { staffId } = data || {};
+  if (!staffId || typeof staffId !== 'string') {
+    throw new functions.https.HttpsError('invalid-argument', 'staffId must be a non-empty string');
+  }
+
+  const cleanStaffId = staffId.trim();
+  const staffDoc = await db.collection('staff').doc(cleanStaffId).get();
+  if (!staffDoc.exists) {
+    throw new functions.https.HttpsError('not-found', 'Staff doc not found: ' + cleanStaffId);
+  }
+
+  const staffData = staffDoc.data()!;
+  if (staffData.active === false) {
+    throw new functions.https.HttpsError('permission-denied', 'Staff account is inactive');
+  }
+
+  const role = staffData.role || 'inspector';
+  const wardIds = Array.isArray(staffData.wardIds) ? staffData.wardIds : [];
+  const scopeRefreshedAt = new Date().toISOString();
+
+  const token = await admin.auth().createCustomToken(cleanStaffId, {
+    role,
+    staffId: cleanStaffId,
+    wardIds,
+  });
+
+  return {
+    token,
+    role,
+    staffId: cleanStaffId,
+    wardIds,
+    scopeRefreshedAt,
+  };
 });

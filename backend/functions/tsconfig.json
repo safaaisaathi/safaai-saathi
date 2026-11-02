@@ -9,6 +9,7 @@
     "strict": false,
     "target": "es2021",
     "skipLibCheck": true,
+    "typeRoots": ["../../apps/citizen_app/node_modules/@types"],
     "types": ["node"]
   },
   "compileOnSave": true,

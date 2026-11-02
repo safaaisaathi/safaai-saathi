@@ -6,6 +6,10 @@ service cloud.firestore {
     function isAuthenticated() {
       return request.auth != null;
     }
+
+    function getDeviceId() {
+      return request.auth.token.deviceId != null ? request.auth.token.deviceId : getDeviceId();
+    }
     
     function isStaff() {
       return isAuthenticated() && request.auth.token.role in ['inspector', 'chief_officer', 'tdo', 'ddo'];
@@ -51,7 +55,7 @@ service cloud.firestore {
     // 5. Complaints: Anonymous or authenticated citizens can create and read their own
     match /complaints/{complaintId} {
       allow read: if isStaff() || (
-        isAuthenticated() && resource.data.deviceId == request.auth.uid
+        isAuthenticated() && resource.data.deviceId == getDeviceId()
       );
       
       // Citizens can create new complaints
@@ -59,7 +63,7 @@ service cloud.firestore {
         && request.resource.data.category in ['garbage_dump', 'open_gutter', 'missed_collection', 'dead_animal', 'public_toilet', 'construction_debris', 'hazardous_waste', 'other']
         && request.resource.data.status == 'received'
         && request.resource.data.escalationLevel == 0
-        && request.resource.data.deviceId == request.auth.uid;
+        && request.resource.data.deviceId == getDeviceId();
         
       function isCitizenResolutionVerification() {
         let isConfirm = request.resource.data.status == 'resolved' 
@@ -85,7 +89,7 @@ service cloud.firestore {
       // Citizens can strictly verify or reopen their own ticket; staff can update all fields
       allow update: if isStaff() || (
         isAuthenticated()
-        && resource.data.deviceId == request.auth.uid
+        && resource.data.deviceId == getDeviceId()
         && request.resource.data.deviceId == resource.data.deviceId
         && (isCitizenResolutionVerification() || isCitizenTicketReopen())
       );
@@ -112,7 +116,7 @@ service cloud.firestore {
     // 8. Collection Feedback: Post-collection verification audits from citizens
     match /collectionFeedback/{feedbackId} {
       allow read: if isStaff();
-      allow create: if isAuthenticated() && request.resource.data.deviceId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.deviceId == getDeviceId();
       allow update: if isStaff();
       allow delete: if false;
     }

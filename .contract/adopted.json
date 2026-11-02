@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "app": "userapp",
+  "repo": "safaaisaathi/user-app",
+  "contractVersion": "1.0.0",
+  "extensionVersion": "0",
+  "coreChanges": {
+    "CHG-0001": {
+      "status": "adopted",
+      "progress": 1,
+      "verifiedAt": "2026-11-01T10:00:00Z",
+      "note": "Collection and field contracts frozen and aligned in citizen app."
+    },
+    "CHG-0002": {
+      "status": "not_applicable",
+      "progress": null,
+      "note": "The user app never reads the driver phone."
+    },
+    "CHG-0003": {
+      "status": "adopted",
+      "urgency": "immediate",
+      "progress": 1,
+      "verifiedAt": "2026-11-02T13:20:00Z",
+      "checklist": [
+        { "task": "Implement bootstrapUserSession callable in backend functions", "done": true },
+        { "task": "Integrate bootstrapUserSession and signInWithCustomToken in citizen app", "done": true },
+        { "task": "Persist citizen deviceId and maintain routeId claim scope", "done": true },
+        { "task": "Align complaints and ratings read/write queries to deviceId claim", "done": true }
+      ]
+    },
+    "CHG-0004": {
+      "status": "not_applicable",
+      "progress": null,
+      "note": "The admin panel is the only affected app."
+    },
+    "CHG-0005": {
+      "status": "not_applicable",
+      "progress": null,
+      "note": "The driver app owns the trail write."
+    },
+    "CHG-0006": {
+      "status": "not_applicable",
+      "progress": null,
+      "note": "The driver app owns the PIN flow deletion."
+    },
+    "CHG-0007": {
+      "status": "adopted",
+      "urgency": "scheduled",
+      "progress": 1,
+      "verifiedAt": "2026-11-02T13:20:00Z",
+      "checklist": [
+        { "task": "Update arrivalAlert trigger in Cloud Functions to check distance <= radiusM + ARRIVAL_ALERT_RADIUS_M (100m)", "done": true },
+        { "task": "Ensure citizen app displays arrival alert reflecting 100m ward boundary trigger", "done": true }
+      ]
+    }
+  }
+}
