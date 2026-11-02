@@ -2,7 +2,7 @@ name: Safaai Saathi CI, Web & Android APK Deployment
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, feat/platform-integration ]
   workflow_dispatch:
 
 permissions:
@@ -46,11 +46,11 @@ jobs:
       - name: Build Web App
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY || 'AIzaSyDemo-Godhra-SafaaiSaathi2026' }}
-          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN || 'safai-saathi-panchmahal.firebaseapp.com' }}
-          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID || 'safai-saathi-panchmahal' }}
-          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET || 'safai-saathi-panchmahal.appspot.com' }}
-          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID || '1029384756' }}
-          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID || '1:1029384756:web:a1b2c3d4e5f6' }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN || 'safaaisaathi-63a87.firebaseapp.com' }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID || 'safaaisaathi-63a87' }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET || 'safaaisaathi-63a87.appspot.com' }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID || '179594621556' }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID || '1:179594621556:web:citizenapp' }}
         run: |
           npm --prefix apps/citizen_app run build
 
@@ -91,7 +91,7 @@ jobs:
 
       - name: Create or Update GitHub Release with Direct APK
         uses: softprops/action-gh-release@v2
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/platform-integration'
         with:
           tag_name: v1.0.0
           name: "Safaai Saathi Android v1.0.0"
