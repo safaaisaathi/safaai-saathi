@@ -726,7 +726,7 @@ const deltaY = clientY - startYRef.current;
 
 const sheetHeight = sheetRef.current.offsetHeight || (window.innerHeight * 0.78);
 
-const maxCollapse = sheetHeight - 64;
+const maxCollapse = sheetHeight - 138;
 
 if (!isFullscreenMap) {
 
@@ -978,7 +978,7 @@ title="Settings & Ward Selector"
 
 className={`absolute right-4 z-20 transition-all duration-300 ${
 
-isFullscreenMap ? 'bottom-20' : 'bottom-[79.5vh]'
+isFullscreenMap ? 'bottom-40' : 'bottom-[79.5vh]'
 
 }`}
 
@@ -1010,7 +1010,7 @@ ref={sheetRef}
 
 style={{
 
-transform: isFullscreenMap ? 'translateY(calc(100% - 64px))' : 'translateY(0px)',
+transform: isFullscreenMap ? 'translateY(calc(100% - 138px))' : 'translateY(0px)',
 
 transition: isDraggingRef.current ? 'none' : 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)',
 
@@ -1152,7 +1152,7 @@ className="absolute left-0 right-0 bottom-0 z-40 bg-white dark:bg-[#16221B] roun
 
         {/* Detailed Content inside Bottom Sheet (Directly visible, no scrolling needed) */}
 
-<div className="px-4 pb-24 pt-1 flex flex-col gap-3.5 overflow-y-auto flex-1 overscroll-contain">
+<div className="px-4 pb-36 pt-1 flex flex-col gap-3.5 overflow-y-auto flex-1 overscroll-contain">
 
 {/* Compact Contour Card for Van ETA & Duty Status */}
 

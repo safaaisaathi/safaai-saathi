@@ -576,7 +576,6 @@ onOpenIntro={() => setIsIntroOpen(true)}
 
         lang={lang}
 
-        hidden={currentTab === 'map' && isMapFullscreen}
 
       />
 
