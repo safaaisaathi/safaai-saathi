@@ -1152,7 +1152,7 @@ className="absolute left-0 right-0 bottom-0 z-40 bg-white dark:bg-[#16221B] roun
 
         {/* Detailed Content inside Bottom Sheet (Directly visible, no scrolling needed) */}
 
-<div className="px-4 pb-36 pt-1 flex flex-col gap-3.5 overflow-y-auto flex-1 overscroll-contain">
+<div className={`px-4 pb-36 pt-1 flex flex-col gap-3.5 overflow-y-auto flex-1 overscroll-contain transition-opacity duration-200 ${isFullscreenMap ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
 
 {/* Compact Contour Card for Van ETA & Duty Status */}
 
