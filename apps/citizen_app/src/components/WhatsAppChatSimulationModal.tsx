@@ -67,7 +67,7 @@ export const WhatsAppChatSimulationModal: React.FC<WhatsAppChatSimulationModalPr
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-in fade-in duration-200">
       <div className="w-full max-w-md bg-[#ECE5DD] dark:bg-[#0B141A] rounded-[28px] overflow-hidden shadow-2xl flex flex-col h-[90vh] max-h-[720px] border border-[#25D366]/40">
         
         {/* WhatsApp App Header Bar */}

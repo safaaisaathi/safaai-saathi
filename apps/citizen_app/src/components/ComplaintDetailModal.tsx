@@ -104,7 +104,7 @@ export const ComplaintDetailModal: React.FC<ComplaintDetailModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in">
+      <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in">
         <div className="w-full max-w-md max-h-[92vh] bg-white dark:bg-[#16221B] rounded-t-[32px] sm:rounded-[28px] overflow-y-auto shadow-2xl flex flex-col border border-[#DCE5D9] dark:border-[#2A3B31]">
           {/* Top Header */}
           <div className="sticky top-0 z-10 bg-white/95 dark:bg-[#16221B]/95 backdrop-blur-md px-6 py-4 border-b border-[#DCE5D9] dark:border-[#2A3B31] flex items-center justify-between">

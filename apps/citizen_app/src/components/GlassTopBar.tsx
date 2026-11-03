@@ -138,7 +138,7 @@ export const GlassTopBar: React.FC<GlassTopBarProps> = ({
 
       {/* Download / Install Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-white dark:bg-[#16221B] w-full max-w-sm rounded-[32px] p-6 shadow-2xl border border-[#DCE5D9] dark:border-[#2A3B31] flex flex-col gap-4">
             <div className="flex items-center justify-between pb-2 border-b border-[#E9F1E6] dark:border-[#2A3B31]">
               <div className="flex items-center gap-2.5">

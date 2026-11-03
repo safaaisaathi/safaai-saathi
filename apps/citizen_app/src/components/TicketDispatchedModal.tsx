@@ -34,7 +34,7 @@ export const TicketDispatchedModal: React.FC<TicketDispatchedModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
       <div className="w-full max-w-md max-h-[92vh] bg-white rounded-t-[32px] sm:rounded-[32px] overflow-hidden shadow-2xl flex flex-col border border-[#DCE5D9] animate-in slide-in-from-bottom duration-300">
         
         {/* Top Header Card */}

@@ -225,7 +225,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-between overflow-hidden">
+    <div className="fixed inset-0 z-[60] bg-black flex flex-col items-center justify-between overflow-hidden">
       {/* Hidden native camera capture input (100% Android hardware support) */}
       <input
         type="file"
