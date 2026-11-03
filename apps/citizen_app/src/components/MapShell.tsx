@@ -506,113 +506,50 @@ return () => clearTimeout(timer);
 
 }, [isFullscreenMap]);
 
-// Render All City Vehicles with Active Van Highlight (matching reference design)
-
+// Render ONLY the assigned van for this citizen's specific ward
 useEffect(() => {
+  if (!leafletMapRef.current || !vansGroupRef.current || !activeVan) return;
 
-if (!leafletMapRef.current || !vansGroupRef.current) return;
+  const group = vansGroupRef.current;
+  group.clearLayers();
 
-const group = vansGroupRef.current;
+  const v = activeVan;
+  const vanPos: [number, number] = [v.lastLocation.lat, v.lastLocation.lng];
+  const isMoving = (v.lastLocation.speedKmph || 0) > 0;
 
-group.clearLayers();
+  const vanIconHtml = `
+    <div class="relative flex flex-col items-center">
+      <div class="bg-white px-2.5 py-0.5 rounded-full text-[10px] font-extrabold text-[#14201A] shadow-md border border-[#DCE5D9] mb-1 whitespace-nowrap animate-bounce">
+        ${isNear ? '🚨 ' + (lang === 'gu' ? 'નજીક છે' : 'Arriving') : etaMinutes + ' ' + t.etaMinutes}
+      </div>
+      <div class="relative w-10 h-10 rounded-full bg-[#1B7A3F] border-2 border-white shadow-lg flex items-center justify-center text-white">
+        <span class="text-base select-none">🚛</span>
+        <span class="absolute inset-0 rounded-full border-2 border-[#1B7A3F] animate-ping opacity-60"></span>
+      </div>
+      <div class="bg-[#14201A]/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md mt-1 shadow-sm border border-white/20 whitespace-nowrap tracking-tight">
+        ${v.plateNo}
+      </div>
+    </div>
+  `;
 
-vans.forEach(v => {
+  const vanMarker = L.marker(vanPos, {
+    icon: L.divIcon({
+      className: 'active-van-marker',
+      html: vanIconHtml,
+      iconSize: [60, 76],
+      iconAnchor: [30, 76],
+    }),
+    zIndexOffset: 1000,
+  }).addTo(group);
 
-const isCurrentWardVan = activeVan && v.id === activeVan.id;
-
-const vanPos: [number, number] = [v.lastLocation.lat, v.lastLocation.lng];
-
-const isMoving = (v.lastLocation.speedKmph || 0) > 0;
-
-const vanIconHtml = `
-
-<div class="relative flex flex-col items-center">
-
-${
-
-isCurrentWardVan
-
-? `
-
-<div class="bg-white px-2.5 py-0.5 rounded-full text-[10px] font-extrabold text-[#14201A] shadow-md border border-[#DCE5D9] mb-1 whitespace-nowrap animate-bounce">
-
-${isNear ? '🚨 ' + (lang === 'gu' ? 'નજીક છે' : 'Arriving') : etaMinutes + ' ' + t.etaMinutes}
-
-</div>
-
-`
-
-: ''
-
-}
-
-<div class="relative w-10 h-10 rounded-full ${
-
-isCurrentWardVan ? 'bg-[#1B7A3F]' : isMoving ? 'bg-[#059669]' : 'bg-[#D97706]'
-
-} border-2 border-white shadow-lg flex items-center justify-center text-white">
-
-<span class="text-base select-none">🚛</span>
-
-${
-
-isCurrentWardVan
-
-? '<span class="absolute inset-0 rounded-full border-2 border-[#1B7A3F] animate-ping opacity-60"></span>'
-
-: ''
-
-}
-
-</div>
-
-<div class="bg-[#14201A]/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md mt-1 shadow-sm border border-white/20 whitespace-nowrap tracking-tight">
-
-${v.plateNo}
-
-</div>
-
-</div>
-
-`;
-
-const vanMarker = L.marker(vanPos, {
-
-icon: L.divIcon({
-
-className: isCurrentWardVan ? 'active-van-marker' : 'other-van-marker',
-
-html: vanIconHtml,
-
-iconSize: [60, isCurrentWardVan ? 76 : 60],
-
-iconAnchor: [30, isCurrentWardVan ? 76 : 56],
-
-}),
-
-zIndexOffset: isCurrentWardVan ? 1000 : 300,
-
-}).addTo(group);
-
-if (!isCurrentWardVan) {
-
-vanMarker.bindPopup(`
-
-<div class="p-1 text-xs">
-
-<p class="font-bold text-[#14201A]">🚛 Van ${v.plateNo}</p>
-
-<p class="text-gray-500 text-[10px]">${isMoving ? 'Moving • ' + v.lastLocation.speedKmph + ' km/h' : 'Stationary'}</p>
-
-</div>
-
-`);
-
-}
-
-});
-
-}, [vans, activeVan?.id, etaMinutes, isNear, lang, t.etaMinutes]);
+  vanMarker.bindPopup(`
+    <div class="p-1.5 text-xs">
+      <p class="font-bold text-[#14201A]">🚛 Van ${v.plateNo} (Assigned)</p>
+      <p class="text-emerald-700 font-semibold text-[11px]">${lang === 'gu' ? 'તમારા વોર્ડની વાન' : 'Assigned to your ward'}</p>
+      <p class="text-gray-500 text-[10px] mt-0.5">${isMoving ? 'Moving • ' + v.lastLocation.speedKmph + ' km/h' : 'Stationary'}</p>
+    </div>
+  `);
+}, [activeVan, etaMinutes, isNear, lang, t.etaMinutes]);
 
 // Update User Location Dot
 
