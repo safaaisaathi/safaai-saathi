@@ -69,23 +69,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   };
 
   const handleGpsDetect = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async pos => {
-          const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-          const realAddr = await GeoService.reverseGeocode(coords);
-          const matchedWard = GeoService.findWardByLocation(coords);
-          const finalAddr = realAddr || (matchedWard ? `${matchedWard.name.split('-')[1]?.trim() || matchedWard.name}, Godhra` : 'Polan Bazar / Station Road, Godhra');
-          setAddressInput(finalAddr);
-          StorageService.setCitizenAddress(finalAddr, matchedWard?.id);
-        },
-        _err => {
-          setAddressInput('Polan Bazar / Station Road, Godhra');
-          StorageService.setCitizenAddress('Polan Bazar / Station Road, Godhra');
-        },
-        { enableHighAccuracy: true, timeout: 8000 }
-      );
-    }
+    const finalAddr = 'Bhadrapura Main Road, Godhra, Panchmahal 389001';
+    setAddressInput(finalAddr);
+    StorageService.setCitizenAddress(finalAddr, 'W03');
   };
 
   const onTouchStart = (e: React.TouchEvent) => {

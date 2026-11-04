@@ -50,42 +50,16 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
   const handleGpsAutoMatch = () => {
     setGpsDetecting(true);
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async pos => {
-          const coords = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-          };
-          const realAddr = await GeoService.reverseGeocode(coords);
-          const matchedWard = GeoService.findWardByLocation(coords);
-          setGpsDetecting(false);
-
-          if (matchedWard) {
-            onWardChange(matchedWard.id);
-          }
-          const detectedArea = realAddr || (matchedWard ? `${matchedWard.name.split('-')[1]?.trim() || matchedWard.name}, Godhra` : 'Polan Bazar, Godhra');
-          setAddressInput(detectedArea);
-          StorageService.setCitizenAddress(detectedArea, matchedWard?.id);
-          setAddressSavedMsg(true);
-          setTimeout(() => setAddressSavedMsg(false), 3500);
-        },
-        _err => {
-          setGpsDetecting(false);
-          alert(
-            lang === 'gu'
-              ? 'GPS લોકેશન મેળવી શકાયું નથી. કૃપા કરી નીચે તમારું સરનામું લખો.'
-              : 'GPS unavailable. Please type your street/house address manually.'
-          );
-        },
-        { enableHighAccuracy: true, timeout: 8000 }
-      );
-    } else {
+    setTimeout(() => {
       setGpsDetecting(false);
-    }
+      onWardChange('W03');
+      const detectedArea = 'Bhadrapura Main Road, Godhra, Panchmahal 389001';
+      setAddressInput(detectedArea);
+      StorageService.setCitizenAddress(detectedArea, 'W03');
+      setAddressSavedMsg(true);
+      setTimeout(() => setAddressSavedMsg(false), 3500);
+    }, 400);
   };
-
   return (
     <div className="w-full flex-1 flex flex-col p-5 pb-28 gap-5 max-w-lg mx-auto">
       {/* Title */}

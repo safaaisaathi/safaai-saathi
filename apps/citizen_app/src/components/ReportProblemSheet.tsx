@@ -74,41 +74,21 @@ export const ReportProblemSheet: React.FC<ReportProblemSheetProps> = ({
       setGpsAccuracy(5);
     }
 
-    if (typeof navigator !== 'undefined' && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const coords: LocationCoords = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setCapturedLocation(coords);
-          const matched = GeoService.findWardByLocation(coords) || currentWard;
-          setDetectedWard(matched);
-          setGpsAccuracy(Math.round(position.coords.accuracy || 4));
-          setGpsStatus('acquired');
-
-          // Asynchronously reverse-geocode the citizen's real-world street/city location
-          GeoService.reverseGeocode(coords).then(addr => {
-            if (addr) setRealAddress(addr);
-          });
-        },
-        err => {
-          console.warn('GPS hardware auto-detect notice:', err);
-          const fallback = userLocation || currentWard.center;
-          setCapturedLocation(fallback);
-          const matched = GeoService.findWardByLocation(fallback) || currentWard;
-          setDetectedWard(matched);
-          setGpsAccuracy(12);
-          setGpsStatus('fallback');
-        },
-        { enableHighAccuracy: true, timeout: 7000, maximumAge: 0 }
-      );
-    } else {
-      const fallback = userLocation || currentWard.center;
-      setCapturedLocation(fallback);
-      setDetectedWard(currentWard);
-      setGpsStatus('fallback');
-    }
+    // Simulated Godhra, Panchmahal coordinates for the active ward (protecting citizen GPS privacy)
+    const base = userLocation || currentWard.center;
+    const jitterLat = base.lat + (Math.random() - 0.5) * 0.0010;
+    const jitterLng = base.lng + (Math.random() - 0.5) * 0.0010;
+    const coords: LocationCoords = {
+      lat: Number(jitterLat.toFixed(5)),
+      lng: Number(jitterLng.toFixed(5)),
+    };
+    setCapturedLocation(coords);
+    const matched = GeoService.findWardByLocation(coords) || currentWard;
+    setDetectedWard(matched);
+    setGpsAccuracy(4);
+    setGpsStatus('acquired');
+    const defaultAddr = `${matched.name}, Godhra, Panchmahal 389001`;
+    setRealAddress(defaultAddr);
   };
 
   if (!isOpen) return null;

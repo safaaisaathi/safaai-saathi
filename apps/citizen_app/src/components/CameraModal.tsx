@@ -185,19 +185,8 @@ export const CameraModal: React.FC<CameraModalProps> = ({
       }
     };
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          applyWatermark({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        },
-        _err => {
-          applyWatermark(initialCoords || { lat: 22.7758, lng: 73.6149 });
-        },
-        { enableHighAccuracy: true, timeout: 5000 }
-      );
-    } else {
-      applyWatermark(initialCoords || { lat: 22.7758, lng: 73.6149 });
-    }
+    // Apply Panchmahal Godhra watermark without querying device GPS
+    applyWatermark(initialCoords || { lat: 22.7792, lng: 73.6226 });
   };
 
   const takeLiveSnapshot = () => {
