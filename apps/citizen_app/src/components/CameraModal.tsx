@@ -186,7 +186,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
     };
 
     // Apply Panchmahal Godhra watermark without querying device GPS
-    applyWatermark(initialCoords || { lat: 22.7792, lng: 73.6226 });
+    applyWatermark(initialCoords || { lat: 22.7645, lng: 73.6015 });
   };
 
   const takeLiveSnapshot = () => {

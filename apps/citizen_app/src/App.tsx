@@ -180,7 +180,7 @@ StorageService.retryPendingSync();
 
 // Request browser geolocation on boot (Locked to Godhra Panchmahal to protect citizen privacy)
 useEffect(() => {
-  setUserLocation({ lat: 22.7792, lng: 73.6226 });
+  setUserLocation({ lat: 22.7645, lng: 73.6015 });
 }, []);
 
 // Live Van GPS Simulation Engine

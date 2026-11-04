@@ -1,4 +1,4 @@
-const CACHE_NAME = 'safaai-saathi-v6';
+const CACHE_NAME = 'safaai-saathi-v7';
 
 const PRECACHE_ASSETS = [
   './',

@@ -53,7 +53,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     setTimeout(() => {
       setGpsDetecting(false);
       onWardChange('W03');
-      const detectedArea = 'Bhadrapura Main Road, Godhra, Panchmahal 389001';
+      const detectedArea = 'Near Panchmahal District Collectorate, Godhra 389001';
       setAddressInput(detectedArea);
       StorageService.setCitizenAddress(detectedArea, 'W03');
       setAddressSavedMsg(true);

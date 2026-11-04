@@ -69,7 +69,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   };
 
   const handleGpsDetect = () => {
-    const finalAddr = 'Bhadrapura Main Road, Godhra, Panchmahal 389001';
+    const finalAddr = 'Near Panchmahal District Collectorate, Godhra 389001';
     setAddressInput(finalAddr);
     StorageService.setCitizenAddress(finalAddr, 'W03');
   };
