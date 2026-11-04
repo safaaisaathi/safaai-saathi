@@ -46,17 +46,20 @@ export const MyComplaintsView: React.FC<MyComplaintsViewProps> = ({
   }, [complaints.map(c => c.id + c.status).join(',')]);
 
   return (
-    <div className="w-full flex-1 flex flex-col p-5 pb-28 gap-4 max-w-lg mx-auto">
+    <div className="w-full flex-1 flex flex-col p-5 pt-6 pb-28 gap-4 max-w-lg mx-auto">
       {/* Title Block */}
-      <div className="pt-2">
-        <h1 className="text-3xl font-light text-[#14201A] dark:text-[#EAF2E6] tracking-tight">
-          {t.myComplaints}
-        </h1>
+      <div className="pt-2 flex items-center justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl font-bold text-[#14201A] dark:text-[#EAF2E6] tracking-tight">
+            {t.myComplaints}
+          </h1>
         <p className="text-xs text-[#566259] dark:text-[#9DB0A2] mt-1">
           {lang === 'gu'
             ? 'આપના મોબાઈલ દ્વારા નોંધાયેલ તમામ સ્વચ્છતા ફરિયાદો'
             : 'All sanitation tickets logged from this device'}
-        </p>
+          </p>
+        </div>
+        <img src="./logo.png" alt="Safaai Saathi" className="w-12 h-12 rounded-2xl shadow-sm border border-[#DCE5D9] dark:border-[#2A3B31] object-cover bg-white shrink-0" />
       </div>
 
       {/* Complaints List */}

@@ -61,11 +61,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     }, 400);
   };
   return (
-    <div className="w-full flex-1 flex flex-col p-5 pb-28 gap-5 max-w-lg mx-auto">
+    <div id="settings" className="w-full flex-1 flex flex-col p-5 pt-8 pb-28 gap-5 max-w-lg mx-auto">
       {/* Title */}
-      <div className="pt-2 flex items-center justify-between">
+      <div className="pt-2 flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-light text-[#14201A] dark:text-[#EAF2E6] tracking-tight">
+          <h1 className="text-2xl font-bold text-[#14201A] dark:text-[#EAF2E6] tracking-tight">
             {t.settings}
           </h1>
           <p className="text-xs text-[#566259] dark:text-[#9DB0A2] mt-1">
@@ -75,7 +75,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <img
           src="./logo.png"
           alt="Safaai Saathi"
-          className="w-12 h-12 rounded-2xl shadow-sm border border-[#DCE5D9] dark:border-[#2A3B31] object-cover bg-white"
+          className="w-12 h-12 rounded-2xl shadow-sm border border-[#DCE5D9] dark:border-[#2A3B31] object-cover bg-white shrink-0"
         />
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { Ward, Van, Complaint, AppTheme } from './types';
 
@@ -34,9 +34,32 @@ const [lang, setLang] = useState<Language>(StorageService.getLanguage());
 
 const [theme, setTheme] = useState<AppTheme>(StorageService.getTheme());
 
-const [currentTab, setCurrentTab] = useState<NavTab>('map');
+const [currentTab, setCurrentTab] = useState<NavTab>(() => {
+  if (typeof window !== 'undefined' && window.location.hash) {
+    if (window.location.hash === '#settings') return 'settings';
+    if (window.location.hash === '#tickets' || window.location.hash === '#complaints') return 'complaints';
+  }
+  return 'map';
+});
+
+useEffect(() => {
+  const handleHash = () => {
+    if (window.location.hash === '#settings') setCurrentTab('settings');
+    else if (window.location.hash === '#tickets' || window.location.hash === '#complaints') setCurrentTab('complaints');
+    else if (window.location.hash === '#map') setCurrentTab('map');
+  };
+  window.addEventListener('hashchange', handleHash);
+  return () => window.removeEventListener('hashchange', handleHash);
+}, []);
 
   const [isMapFullscreen, setIsMapFullscreen] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTop = 0;
+    }
+  }, [currentTab]);
 
 const [wardId, setWardId] = useState<string>(
 
@@ -443,7 +466,7 @@ title="Dismiss"
 
 {/* Main Content Area based on Tab */}
 
-<main className="flex-1 w-full h-full relative overflow-y-auto">
+<main ref={mainRef} className="flex-1 w-full h-full relative overflow-y-auto">
 
 {currentTab === 'map' && (
 
