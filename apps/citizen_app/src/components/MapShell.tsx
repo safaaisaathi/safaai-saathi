@@ -696,7 +696,7 @@ if (sheetRef.current) {
 
 sheetRef.current.style.transition = 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)';
 
-sheetRef.current.style.transform = collapsed ? 'translateY(calc(100% - 72px))' : 'translateY(0px)';
+sheetRef.current.style.transform = collapsed ? 'translateY(calc(100% - 140px))' : 'translateY(0px)';
 
 }
 
@@ -726,7 +726,7 @@ const deltaY = clientY - startYRef.current;
 
 const sheetHeight = sheetRef.current.offsetHeight || (window.innerHeight * 0.78);
 
-const maxCollapse = sheetHeight - 64;
+const maxCollapse = sheetHeight - 140;
 
 if (!isFullscreenMap) {
 
@@ -978,7 +978,7 @@ title="Settings & Ward Selector"
 
 className={`absolute right-4 z-20 transition-all duration-300 ${
 
-isFullscreenMap ? 'bottom-20' : 'bottom-[79.5vh]'
+isFullscreenMap ? 'bottom-40' : 'bottom-[79.5vh]'
 
 }`}
 
@@ -1010,13 +1010,13 @@ ref={sheetRef}
 
 style={{
 
-transform: isFullscreenMap ? 'translateY(calc(100% - 64px))' : 'translateY(0px)',
+transform: isFullscreenMap ? 'translateY(calc(100% - 140px))' : 'translateY(0px)',
 
 transition: isDraggingRef.current ? 'none' : 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)',
 
 }}
 
-className="absolute left-0 right-0 bottom-0 z-40 bg-white dark:bg-[#16221B] rounded-t-[32px] shadow-2xl border-t border-[#DCE5D9] dark:border-[#2C3E33] flex flex-col will-change-transform h-[78vh]"
+className="absolute left-0 right-0 bottom-0 z-30 bg-white dark:bg-[#16221B] rounded-t-[32px] shadow-2xl border-t border-[#DCE5D9] dark:border-[#2C3E33] flex flex-col will-change-transform h-[78vh]"
 
 >
 

@@ -562,7 +562,7 @@ onOpenIntro={() => setIsIntroOpen(true)}
         }}
         complaintsCount={complaints.filter(c => c.status !== 'resolved').length}
         lang={lang}
-        hidden={currentTab === 'map' && isMapFullscreen}
+        hidden={false}
       />
 
 {/* Screen U2: Report Problem Modal */}

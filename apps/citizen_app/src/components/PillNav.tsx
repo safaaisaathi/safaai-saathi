@@ -21,7 +21,7 @@ export const PillNav: React.FC<PillNavProps> = ({
 }) => {
   return (
     <nav
-      className={`fixed bottom-5 left-0 right-0 z-30 flex justify-center pointer-events-none px-4 transition-all duration-300 ease-out ${
+      className={`fixed bottom-5 left-0 right-0 z-40 flex justify-center pointer-events-none px-4 transition-all duration-300 ease-out ${
         hidden ? 'translate-y-28 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
       }`}
     >
