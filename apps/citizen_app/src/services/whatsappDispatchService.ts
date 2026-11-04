@@ -43,8 +43,6 @@ export class WhatsAppDispatchService {
 • 🇬🇧 ${catEn}
 ${complaint.description ? `📝 *વિગત / Description:* ${complaint.description}\n` : ''}📍 *વિસ્તાર / Address:* ${complaint.address || 'Godhra, Panchmahal'}
 🕒 *તારીખ / Date & Time:* ${dateFormatted}
-🗺️ *જીપીએસ લોકેશન / GPS:* ${complaint.location.lat.toFixed(5)}, ${complaint.location.lng.toFixed(5)}
-🌐 *ગૂગલ મેપ લિંક / Map:* https://www.google.com/maps?q=${complaint.location.lat},${complaint.location.lng}
 
 👨‍💼 *સોંપાયેલ વોર્ડ અધિકારી / Assigned Officer:*
 • નામ / Name: ${complaint.assignedName || 'Ward Sanitation Inspector'}

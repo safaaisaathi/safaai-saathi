@@ -109,7 +109,7 @@ export const ComplaintSuccessModal: React.FC<ComplaintSuccessModalProps> = ({
               />
               <div className="absolute top-2 left-2 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] text-white flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#6DB36F]" />
-                <span>GPS Live Photo Verified</span>
+                <span>Civic Photo Verified</span>
               </div>
             </div>
           )}
@@ -138,7 +138,7 @@ export const ComplaintSuccessModal: React.FC<ComplaintSuccessModalProps> = ({
             <div className="p-3 rounded-2xl bg-[#EAF2E7] border border-[#1B7A3F]/30">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold text-[#1B7A3F] uppercase tracking-wider block">
-                  {lang === 'gu' ? 'GPS લોકેશન' : 'GPS Location'}
+                  {lang === 'gu' ? 'ચકાસાયેલ સ્થળ' : 'Civic Location'}
                 </span>
                 <span className="text-[9px] font-black uppercase tracking-wider bg-[#1B7A3F] text-white px-1.5 py-0.5 rounded-full">
                   🔒 LOCKED

@@ -265,8 +265,8 @@ export const ReportProblemSheet: React.FC<ReportProblemSheetProps> = ({
                   <Lock className="w-3.5 h-3.5 text-[#1B7A3F]" />
                   <span>
                     {lang === 'gu'
-                      ? 'ઓટો-ડિટેક્ટેડ GPS લોકેશન (લૉક કરેલ)'
-                      : 'Auto GPS Location (Locked / Read-Only)'}
+                      ? 'ચકાસાયેલ વોર્ડ લોકેશન (લૉક કરેલ)'
+                      : 'Verified Ward Location (Locked / Read-Only)'}
                   </span>
                 </label>
                 <button
@@ -276,7 +276,7 @@ export const ReportProblemSheet: React.FC<ReportProblemSheetProps> = ({
                   className="text-[11px] font-semibold text-[#1B7A3F] hover:underline flex items-center gap-1 active:scale-95 transition disabled:opacity-50"
                 >
                   <RefreshCw className={`w-3 h-3 ${gpsStatus === 'detecting' ? 'animate-spin text-[#1B7A3F]' : ''}`} />
-                  <span>{lang === 'gu' ? 'GPS રિફ્રેશ' : 'Refresh GPS'}</span>
+                  <span>{lang === 'gu' ? 'લોકેશન રિફ્રેશ' : 'Refresh Location'}</span>
                 </button>
               </div>
 
@@ -313,7 +313,7 @@ export const ReportProblemSheet: React.FC<ReportProblemSheetProps> = ({
                   <div className="shrink-0 text-right">
                     <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#1B7A3F] bg-white px-2 py-0.5 rounded-full border border-[#DCE5D9] shadow-xs">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#1B7A3F] animate-pulse"></span>
-                      {gpsAccuracy ? `±${gpsAccuracy}m` : 'High-Precision GPS'}
+                      {gpsAccuracy ? `±${gpsAccuracy}m` : 'Panchmahal Ward Area'}
                     </span>
                   </div>
                 </div>
@@ -324,7 +324,7 @@ export const ReportProblemSheet: React.FC<ReportProblemSheetProps> = ({
                   <span>
                     {lang === 'gu'
                       ? 'લોકેશન ચકાસણી: ચોક્કસ નગરપાલિકા રૂટિંગ માટે આ લોકેશન તમારા વર્તમાન GPS સાથે લૉક છે.'
-                      : 'Location Verification: GPS coordinates are automatically locked to your current position to ensure accurate municipal routing.'}
+                      : 'Location Verification: Location and ward routing are locked to Panchmahal municipal boundary.'}
                   </span>
                 </div>
               </div>
