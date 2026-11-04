@@ -44,8 +44,6 @@ export const generateBilingualWhatsAppMessage = (complaint: Complaint): string =
    🇬🇧 ${categoryEn}
 ${complaint.description ? `📝 *વિગત / Description:* ${complaint.description}\n` : ''}📍 *સરનામું / Address:* ${complaint.address || 'Godhra, Panchmahal'}
 🕒 *તારીખ / Date & Time:* ${dateStr}
-🗺️ *જીપીએસ / GPS:* ${complaint.location.lat.toFixed(5)}, ${complaint.location.lng.toFixed(5)}
-🌐 *ગૂગલ મેપ્સ / Map:* https://www.google.com/maps?q=${complaint.location.lat},${complaint.location.lng}
 ━━━━━━━━━━━━━━━━━━━━━
 🔗 *લાઈવ સ્ટેટસ લિંક / Live Track Complaint:*
 ${trackUrl}

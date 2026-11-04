@@ -139,12 +139,11 @@ export const ReportProblemSheet: React.FC<ReportProblemSheetProps> = ({
     const ticketId = GeoService.generateTicketId();
     const resolvedWard = detectedWard || GeoService.findWardByLocation(capturedLocation) || currentWard;
 
-    // Auto-detected coordinates formatted address
-    const coordsStr = `${capturedLocation.lat.toFixed(5)}° N, ${capturedLocation.lng.toFixed(5)}° E`;
+    // Civic location formatted address
     const locationName = realAddress || resolvedWard.name;
     const formattedAddress = description.trim()
-      ? `${locationName} (${description.trim()}) • GPS: ${coordsStr}`
-      : `${locationName} • GPS: ${coordsStr}`;
+      ? `${locationName} (${description.trim()})`
+      : locationName;
 
     const newComplaint: Complaint = {
       id: 'cmp_' + Date.now().toString(36),
@@ -290,10 +289,8 @@ export const ReportProblemSheet: React.FC<ReportProblemSheetProps> = ({
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-mono font-bold text-[#14201A]">
-                          {capturedLocation
-                            ? `${capturedLocation.lat.toFixed(5)}° N, ${capturedLocation.lng.toFixed(5)}° E`
-                            : (lang === 'gu' ? 'GPS શોધાઈ રહ્યું છે...' : 'Acquiring GPS...')}
+                        <span className="text-xs font-bold text-[#14201A]">
+                          {lang === 'gu' ? detectedWard.nameGu : detectedWard.name} • {detectedWard.code}
                         </span>
                         <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[#1B7A3F] text-white flex items-center gap-0.5 shadow-xs">
                           <Lock className="w-2.5 h-2.5" />

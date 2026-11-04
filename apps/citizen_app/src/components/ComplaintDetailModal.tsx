@@ -247,24 +247,24 @@ export const ComplaintDetailModal: React.FC<ComplaintDetailModalProps> = ({
                 </button>
               )}
 
-            {/* Auto-Detected GPS Coordinates & Location Details (Locked) */}
+            {/* Verified Location & Area Details */}
             <div className="p-3.5 bg-[#EAF2E7] dark:bg-[#1E2D24] rounded-[22px] flex flex-col gap-2 border border-[#1B7A3F]/30">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 font-bold text-xs text-[#1B7A3F] dark:text-[#6DB36F]">
                   <MapPin className="w-4 h-4 shrink-0" />
-                  <span>{lang === 'gu' ? 'ઓટો-ડિટેક્ટેડ GPS લોકેશન:' : 'GPS Location (Auto-Locked):'}</span>
+                  <span>{lang === 'gu' ? 'ચકાસાયેલ વિસ્તાર / સરનામું:' : 'Verified Ward Area:'}</span>
                 </div>
                 <span className="text-[10px] font-black uppercase tracking-wider bg-[#1B7A3F] text-white px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
-                  <span>🔒</span>
-                  <span>{lang === 'gu' ? 'લૉક' : 'LOCKED'}</span>
+                  <span>✓</span>
+                  <span>{lang === 'gu' ? 'ચકાસાયેલ' : 'VERIFIED'}</span>
                 </span>
               </div>
               <div className="bg-white/80 dark:bg-[#14201A]/80 p-2.5 rounded-xl border border-[#DCE5D9] dark:border-[#2A3B31]">
-                <p className="font-mono text-xs font-bold text-[#14201A] dark:text-[#EAF2E6]">
-                  📍 {complaint.location.lat.toFixed(5)}° N, {complaint.location.lng.toFixed(5)}° E
+                <p className="text-xs font-bold text-[#14201A] dark:text-[#EAF2E6]">
+                  📍 {complaint.address}
                 </p>
                 <p className="text-[11px] font-semibold text-[#1B7A3F] dark:text-[#6DB36F] mt-0.5">
-                  {complaint.address}
+                  {lang === 'gu' ? (ward?.nameGu || ward?.name || 'પંચમહાલ') : (ward?.name || 'Panchmahal')} • {ward?.code || 'Panchmahal'}
                 </p>
               </div>
             </div>
@@ -320,9 +320,9 @@ export const ComplaintDetailModal: React.FC<ComplaintDetailModalProps> = ({
                 <div className="absolute bottom-2 left-2 right-2 bg-black/75 backdrop-blur-sm text-white px-3 py-1.5 rounded-xl text-[11px] flex items-center justify-between">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-[#6DB36F]" />
-                    {complaint.location.lat.toFixed(4)}, {complaint.location.lng.toFixed(4)}
+                    {ward?.name || 'Panchmahal'}
                   </span>
-                  <span className="text-[#6DB36F] font-semibold">Live GPS Verified</span>
+                  <span className="text-[#6DB36F] font-semibold">✓ Verified Civic Spot</span>
                 </div>
               </div>
             ) : null}

@@ -165,7 +165,7 @@ export const CameraModal: React.FC<CameraModalProps> = ({
         ctx.fillStyle = '#FFFFFF';
         ctx.font = `bold ${Math.max(16, Math.floor(barHeight * 0.32))}px sans-serif`;
         ctx.fillText(
-          `📍 GPS: ${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}  |  🕒 ${timeStr}`,
+          `📍 Panchmahal Civic Verification  |  🕒 ${timeStr}`,
           24,
           canvas.height - (barHeight * 0.52)
         );
