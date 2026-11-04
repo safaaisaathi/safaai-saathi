@@ -15,7 +15,7 @@ import {
   DEMO_WARD_DUTY,
 } from './demoData';
 
-export async function seedDemoData() {
+export function seedDemoData() {
   if (typeof window === 'undefined' || !window.localStorage) {
     return {
       deviceId: DEMO_DEVICE_ID,
@@ -30,6 +30,35 @@ export async function seedDemoData() {
       feedback: DEMO_FEEDBACK,
       wardDuty: DEMO_WARD_DUTY,
     };
+  }
+
+  // Mock browser geolocation in demo mode to pinpoint citizen at Bhadrapura W03 (Godhra)
+  if (typeof navigator !== 'undefined' && navigator.geolocation) {
+    try {
+      const mockPosition = {
+        coords: {
+          latitude: DEMO_CITIZEN.location.lat,
+          longitude: DEMO_CITIZEN.location.lng,
+          accuracy: 5,
+          altitude: null,
+          altitudeAccuracy: null,
+          heading: null,
+          speed: null,
+          toJSON: () => ({}),
+        },
+        timestamp: Date.now(),
+        toJSON: () => ({}),
+      } as unknown as GeolocationPosition;
+
+      navigator.geolocation.getCurrentPosition = (success: PositionCallback) => {
+        success(mockPosition);
+      };
+
+      navigator.geolocation.watchPosition = (success: PositionCallback) => {
+        success(mockPosition);
+        return 1;
+      };
+    } catch {}
   }
 
   const d = new Date();
@@ -66,6 +95,13 @@ export async function seedDemoData() {
 
   // 5. Admin wards (all 16 Godhra wards)
   localStorage.setItem('safai_sathi_admin_wards', JSON.stringify(DEMO_WARDS));
+
+  // Dispatch events to refresh any active listeners
+  try {
+    window.dispatchEvent(new CustomEvent('safai_sathi_wards_updated', { detail: { wards: DEMO_WARDS } }));
+    window.dispatchEvent(new CustomEvent('safai_sathi_collection_updated'));
+    window.dispatchEvent(new CustomEvent('safai_sathi_complaints_synced', { detail: DEMO_COMPLAINTS }));
+  } catch {}
 
   const demoData = {
     deviceId: DEMO_DEVICE_ID,

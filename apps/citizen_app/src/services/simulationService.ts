@@ -379,7 +379,7 @@ export class VanSimulationEngine {
   private static southIndex = 0;
 
   private static ruralIndex = 0;
-  private static demoIndex = 0;
+  private static demoIndex = 5;
 
   private static listeners: ((vans: Van[]) => void)[] = [];
 
@@ -562,6 +562,9 @@ export class VanSimulationEngine {
   static onVansUpdate(fn: (vans: Van[]) => void): () => void {
 
     this.listeners.push(fn);
+    if (IS_DEMO) {
+      fn(DEMO_VANS);
+    }
 
     return () => {
 
