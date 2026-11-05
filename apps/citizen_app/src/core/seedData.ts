@@ -1,346 +1,692 @@
-import { Ward, Route, Van, SanitationTip, Staff } from '../types';
-
-export const SEED_WARDS: Ward[] = [
-  {
-    id: 'ward_godhra_01',
-    name: 'Ward 1 - Polan Bazar & Chitra Cinema Area',
-    nameGu: 'વોર્ડ ૧ - પોલન બજાર અને ચિત્રા ટોકીઝ',
-    code: 'GNP-W01',
-    type: 'urban',
-    center: { lat: 22.7758, lng: 73.6149 },
-    radiusM: 3200,
-    polygon: [
-      [22.7812, 73.6105],
-      [22.7818, 73.6182],
-      [22.7745, 73.6186],
-      [22.7725, 73.6145],
-      [22.7735, 73.6095],
-    ],
-    routeId: 'route_godhra_north',
-    inspectorId: 'staff_inspector_01',
-    inspectorName: 'Rajesh Parmar (Inspector)',
-    inspectorPhone: '+91 94260 12341',
-    escalationTo: 'staff_chief_officer',
-    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
-    escalationPhone: '+91 94260 99001',
-  },
-  {
-    id: 'ward_godhra_02',
-    name: 'Ward 2 - Station Road & ST Bus Depot',
-    nameGu: 'વોર્ડ ૨ - સ્ટેશન રોડ અને એસ.ટી. ડેપો',
-    code: 'GNP-W02',
-    type: 'urban',
-    center: { lat: 22.7712, lng: 73.6198 },
-    radiusM: 3000,
-    polygon: [
-      [22.7745, 73.6186],
-      [22.7752, 73.6242],
-      [22.7675, 73.6252],
-      [22.7660, 73.6175],
-      [22.7725, 73.6145],
-    ],
-    routeId: 'route_godhra_north',
-    inspectorId: 'staff_inspector_01',
-    inspectorName: 'Rajesh Parmar (Inspector)',
-    inspectorPhone: '+91 94260 12341',
-    escalationTo: 'staff_chief_officer',
-    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
-    escalationPhone: '+91 94260 99001',
-  },
-  {
-    id: 'ward_godhra_03',
-    name: 'Ward 3 - Civil Hospital & Collectorate Complex',
-    nameGu: 'વોર્ડ ૩ - સિવિલ હોસ્પિટલ અને કલેક્ટર સંકુલ',
-    code: 'GNP-W03',
-    type: 'urban',
-    center: { lat: 22.7801, lng: 73.6264 },
-    radiusM: 3400,
-    polygon: [
-      [22.7865, 73.6182],
-      [22.7862, 73.6335],
-      [22.7760, 73.6338],
-      [22.7752, 73.6242],
-      [22.7818, 73.6182],
-    ],
-    routeId: 'route_godhra_north',
-    inspectorId: 'staff_inspector_02',
-    inspectorName: 'Manish Baria (Inspector)',
-    inspectorPhone: '+91 94260 12342',
-    escalationTo: 'staff_chief_officer',
-    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
-    escalationPhone: '+91 94260 99001',
-  },
-  {
-    id: 'ward_godhra_04',
-    name: 'Ward 4 - Vavdi Road & Bamroli Swachhata Zone',
-    nameGu: 'વોર્ડ ૪ - વાવડી રોડ અને બામરોલી ઝોન',
-    code: 'GNP-W04',
-    type: 'urban',
-    center: { lat: 22.7680, lng: 73.6080 },
-    radiusM: 3300,
-    polygon: [
-      [22.7735, 73.6095],
-      [22.7725, 73.6145],
-      [22.7660, 73.6175],
-      [22.7610, 73.6120],
-      [22.7635, 73.6015],
-      [22.7710, 73.6025],
-    ],
-    routeId: 'route_godhra_south',
-    inspectorId: 'staff_inspector_02',
-    inspectorName: 'Manish Baria (Inspector)',
-    inspectorPhone: '+91 94260 12342',
-    escalationTo: 'staff_chief_officer',
-    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
-    escalationPhone: '+91 94260 99001',
-  },
-  {
-    id: 'ward_godhra_05',
-    name: 'Ward 5 - Lunawada Road & Ankleshwar Highway',
-    nameGu: 'વોર્ડ ૫ - લુણાવાડા રોડ હાઇવે ઝોન',
-    code: 'GNP-W05',
-    type: 'urban',
-    center: { lat: 22.7850, lng: 73.6050 },
-    radiusM: 3500,
-    polygon: [
-      [22.7915, 73.5980],
-      [22.7912, 73.6110],
-      [22.7812, 73.6105],
-      [22.7735, 73.6095],
-      [22.7710, 73.6025],
-      [22.7790, 73.5975],
-    ],
-    routeId: 'route_godhra_south',
-    inspectorId: 'staff_inspector_03',
-    inspectorName: 'Kirit Rathod (Inspector)',
-    inspectorPhone: '+91 94260 12343',
-    escalationTo: 'staff_chief_officer',
-    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
-    escalationPhone: '+91 94260 99001',
-  },
-  {
-    id: 'ward_rural_bhamaiya',
-    name: 'Bhamaiya Gram Panchayat',
-    nameGu: 'ભામાઇયા ગ્રામ પંચાયત',
-    code: 'GP-BHAM',
-    type: 'rural',
-    center: { lat: 22.7550, lng: 73.6300 },
-    radiusM: 3800,
-    polygon: [
-      [22.7650, 73.6260],
-      [22.7640, 73.6420],
-      [22.7440, 73.6410],
-      [22.7450, 73.6210],
-      [22.7600, 73.6220],
-    ],
-    routeId: 'route_panchmahal_rural',
-    inspectorId: 'staff_talati_01',
-    inspectorName: 'D. M. Patel (Talati-cum-Mantri)',
-    inspectorPhone: '+91 94260 55001',
-    escalationTo: 'staff_tdo_godhra',
-    escalationName: 'Shri M. K. Solanki (TDO Godhra)',
-    escalationPhone: '+91 94260 88002',
-  },
-  {
-    id: 'ward_rural_vavdi',
-    name: 'Vavdi Gram Panchayat & Highway Cluster',
-    nameGu: 'વાવડી ગ્રામ પંચાયત અને હાઇવે ક્લસ્ટર',
-    code: 'GP-VAVDI',
-    type: 'rural',
-    center: { lat: 22.7620, lng: 73.5850 },
-    radiusM: 3500,
-    polygon: [
-      [22.7750, 73.5700],
-      [22.7740, 73.5960],
-      [22.7550, 73.5980],
-      [22.7520, 73.5720],
-    ],
-    routeId: 'route_panchmahal_rural',
-    inspectorId: 'staff_talati_03',
-    inspectorName: 'H. P. Patel (Talati-cum-Mantri)',
-    inspectorPhone: '+91 94260 55003',
-    escalationTo: 'staff_tdo_godhra',
-    escalationName: 'Shri M. K. Solanki (TDO Godhra)',
-    escalationPhone: '+91 94260 88002',
-  },
-  {
-    id: 'ward_rural_tuwa',
-    name: 'Tuwa Gram Panchayat & Kund Area',
-    nameGu: 'ટુવા ગ્રામ પંચાયત કુંડ વિસ્તાર',
-    code: 'GP-TUWA',
-    type: 'rural',
-    center: { lat: 22.7980, lng: 73.5500 },
-    radiusM: 3600,
-    polygon: [
-      [22.8120, 73.5350],
-      [22.8100, 73.5650],
-      [22.7850, 73.5680],
-      [22.7860, 73.5380],
-    ],
-    routeId: 'route_panchmahal_rural',
-    inspectorId: 'staff_talati_02',
-    inspectorName: 'S. N. Joshi (Talati-cum-Mantri)',
-    inspectorPhone: '+91 94260 55002',
-    escalationTo: 'staff_tdo_godhra',
-    escalationName: 'Shri M. K. Solanki (TDO Godhra)',
-    escalationPhone: '+91 94260 88002',
-  }
-];
-
-export const SEED_ROUTES: Route[] = [
-  {
-    id: 'route_godhra_north',
-    name: 'Godhra North Urban Corridor (Ward 1 -> Ward 2 -> Ward 3)',
-    wardIds: ['ward_godhra_01', 'ward_godhra_02', 'ward_godhra_03'],
-    scheduledStartTime: '07:30',
-  },
-  {
-    id: 'route_godhra_south',
-    name: 'Godhra South Arterial (Ward 4 -> Ward 5)',
-    wardIds: ['ward_godhra_04', 'ward_godhra_05'],
-    scheduledStartTime: '08:00',
-  },
-  {
-    id: 'route_panchmahal_rural',
-    name: 'Panchmahal Gram Swachhata Circuit (Bhamaiya -> Tuwa -> Vavdi)',
-    wardIds: ['ward_rural_bhamaiya', 'ward_rural_tuwa', 'ward_rural_vavdi'],
-    scheduledStartTime: '08:30',
-  }
-];
-
-export const SEED_VANS: Van[] = [
-  {
-    id: 'van_gj17_ga_1001',
-    plateNo: 'GJ-17-GA-1001',
-    routeId: 'route_godhra_north',
-    status: 'on_shift',
-    lastLocation: {
-      lat: 22.7735,
-      lng: 73.6165,
-      updatedAt: new Date().toISOString(),
-      speedKmph: 18,
-    },
-    currentTripId: 'trip_20261029_001',
-    batteryPct: 88,
-    driverName: 'Bharatbhai Solanki',
-    driverPhone: '+91 98980 11223',
-  },
-  {
-    id: 'van_gj17_ga_1002',
-    plateNo: 'GJ-17-GA-1002',
-    routeId: 'route_godhra_south',
-    status: 'on_shift',
-    lastLocation: {
-      lat: 22.7695,
-      lng: 73.6065,
-      updatedAt: new Date().toISOString(),
-      speedKmph: 14,
-    },
-    currentTripId: 'trip_20261029_002',
-    batteryPct: 76,
-    driverName: 'Rameshbhai Vankar',
-    driverPhone: '+91 98980 44556',
-  },
-  {
-    id: 'van_gj17_ga_1003',
-    plateNo: 'GJ-17-GA-1003',
-    routeId: 'route_panchmahal_rural',
-    status: 'on_shift',
-    lastLocation: {
-      lat: 22.7560,
-      lng: 73.6280,
-      updatedAt: new Date().toISOString(),
-      speedKmph: 16,
-    },
-    currentTripId: 'trip_20261029_003',
-    batteryPct: 92,
-    driverName: 'Nareshbhai Dabhi',
-    driverPhone: '+91 98980 77889',
-  }
-];
-
-export const SEED_STAFF: Staff[] = [
-  {
-    id: 'staff_inspector_01',
-    authUid: 'uid_insp_01',
-    name: 'Rajesh Parmar',
-    role: 'inspector',
-    wardIds: ['ward_godhra_01', 'ward_godhra_02'],
-    talukaId: 'godhra',
-    phone: '+91 94260 12341',
-  },
-  {
-    id: 'staff_chief_officer',
-    authUid: 'uid_co_01',
-    name: 'Smt. Vaishali Patel (Chief Officer)',
-    role: 'chief_officer',
-    wardIds: ['ward_godhra_01', 'ward_godhra_02', 'ward_godhra_03', 'ward_godhra_04', 'ward_godhra_05'],
-    talukaId: 'godhra',
-    phone: '+91 94260 99001',
-  },
-  {
-    id: 'staff_tdo_godhra',
-    authUid: 'uid_tdo_01',
-    name: 'Shri M. K. Solanki (TDO Godhra)',
-    role: 'tdo',
-    wardIds: ['ward_rural_bhamaiya', 'ward_rural_tuwa', 'ward_rural_vavdi'],
-    talukaId: 'godhra',
-    phone: '+91 94260 88002',
-  },
-  {
-    id: 'staff_ddo_panchmahal',
-    authUid: 'uid_ddo_01',
-    name: 'Shri D. K. Raval, IAS (District Development Officer, Panchmahal)',
-    role: 'ddo',
-    wardIds: [],
-    talukaId: 'panchmahal_district',
-    phone: '02672-241200',
-  }
-];
-
-export const SEED_TIPS: SanitationTip[] = [
-  {
-    id: 'tip_01',
-    icon: 'Recycle',
-    badgeGu: 'ભીનો-સૂકો કચરો',
-    badgeEn: 'Segregation',
-    titleGu: 'લીલો ડબ્બો ભીના કચરા માટે, વાદળી ડબ્બો સૂકા કચરા માટે',
-    titleEn: 'Green Bin for Wet Waste, Blue Bin for Dry Waste',
-    descGu: 'શાકભાજીના છોતરાં અને બચેલું ભોજન લીલા ડબ્બામાં નાખો. પ્લાસ્ટિક, કાગળ અને બોટલ વાદળી ડબ્બામાં અલગ રાખો.',
-    descEn: 'Keep vegetable peels and kitchen waste in the green bin. Put plastic, paper, and glass in the blue dry waste bin.',
-    category: 'segregation',
-  },
-  {
-    id: 'tip_02',
-    icon: 'Droplets',
-    badgeGu: 'ગટર સ્વચ્છતા',
-    badgeEn: 'Open Gutters',
-    titleGu: 'ખુલ્લી ગટરમાં ક્યારેય પ્લાસ્ટિક કે ઘન કચરો ન ફેંકો',
-    titleEn: 'Never Throw Plastic or Solid Trash into Open Gutters',
-    descGu: 'ગટરમાં કચરો નાખવાથી પાણી બ્લોક થઈ મચ્છરો અને ડેન્ગ્યુ-મેલેરિયાનો ઉપદ્રવ વધે છે. ચોખ્ખી ગટર એ જ તંદુરસ્તી.',
-    descEn: 'Blockages in gutters cause stagnant wastewater, leading to mosquito breeding and dengue/malaria risks.',
-    category: 'gutter',
-  },
-  {
-    id: 'tip_03',
-    icon: 'BellRing',
-    badgeGu: 'વાન સાયરન',
-    badgeEn: 'Arrival Alert',
-    titleGu: 'વાન નજીક આવે એટલે તરત કચરો તૈયાર રાખો',
-    titleEn: 'Keep Bins Ready When the Collection Van Enters Your Ward',
-    descGu: 'તમારા મોબાઈલમાં વાન તમારા વિસ્તારથી ૫૦૦ મીટર દૂર હોય ત્યારે તરત એલર્ટ આવશે. શેરીના ખૂણે કચરો ફેંકવાનું ટાળો.',
-    descEn: 'Safaai Saathi notifies you as soon as the van is within 500m of your street. Avoid dumping at road corners.',
-    category: 'schedule',
-  },
-  {
-    id: 'tip_04',
-    icon: 'ShieldAlert',
-    badgeGu: 'નાગરિક જાગૃતિ',
-    badgeEn: 'Citizen Vigilance',
-    titleGu: 'ગંદકી દેખાય તો તરત લાઈવ ફોટો પાડી ફરિયાદ કરો',
-    titleEn: 'Spot a Garbage Dump? Report Instantly via Live Camera',
-    descGu: 'તમારી ફરિયાદ સીધી વોર્ડ ઇન્સ્પેક્ટર અને ચીફ ઓફિસર સુધી પહોંચે છે. ૨૪ કલાકમાં ન ઉકેલાય તો આપોઆપ એસ્કેલેટ થશે.',
-    descEn: 'Geo-tagged complaints route directly to the designated Inspector with 24-hour auto-escalation to Chief Officer.',
-    category: 'health',
-  }
-];
+import { Ward, Route, Van, SanitationTip, Staff } from '../types';
+
+
+
+export const SEED_WARDS: Ward[] = [
+
+  {
+
+    id: 'ward_godhra_01',
+
+    name: 'Ward 1 - Polan Bazar & Chitra Cinema Area',
+
+    nameGu: 'વોર્ડ ૧ - પોલન બજાર અને ચિત્રા ટોકીઝ',
+
+    code: 'GNP-W01',
+
+    type: 'urban',
+
+    center: { lat: 22.7758, lng: 73.6149 },
+
+    radiusM: 3200,
+
+    polygon: [
+
+      [22.7812, 73.6105],
+
+      [22.7818, 73.6182],
+
+      [22.7745, 73.6186],
+
+      [22.7725, 73.6145],
+
+      [22.7735, 73.6095],
+
+    ],
+
+    routeId: 'route_godhra_north',
+
+    inspectorId: 'staff_inspector_01',
+
+    inspectorName: 'Rajesh Parmar (Inspector)',
+
+    inspectorPhone: '+91 94260 12341',
+
+    escalationTo: 'staff_chief_officer',
+
+    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
+
+    escalationPhone: '+91 94260 99001',
+
+  },
+
+  {
+
+    id: 'ward_godhra_02',
+
+    name: 'Ward 2 - Station Road & ST Bus Depot',
+
+    nameGu: 'વોર્ડ ૨ - સ્ટેશન રોડ અને એસ.ટી. ડેપો',
+
+    code: 'GNP-W02',
+
+    type: 'urban',
+
+    center: { lat: 22.7712, lng: 73.6198 },
+
+    radiusM: 3000,
+
+    polygon: [
+
+      [22.7745, 73.6186],
+
+      [22.7752, 73.6242],
+
+      [22.7675, 73.6252],
+
+      [22.7660, 73.6175],
+
+      [22.7725, 73.6145],
+
+    ],
+
+    routeId: 'route_godhra_north',
+
+    inspectorId: 'staff_inspector_01',
+
+    inspectorName: 'Rajesh Parmar (Inspector)',
+
+    inspectorPhone: '+91 94260 12341',
+
+    escalationTo: 'staff_chief_officer',
+
+    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
+
+    escalationPhone: '+91 94260 99001',
+
+  },
+
+  {
+
+    id: 'ward_godhra_03',
+
+    name: 'Ward 3 - Civil Hospital & Collectorate Complex',
+
+    nameGu: 'વોર્ડ ૩ - સિવિલ હોસ્પિટલ અને કલેક્ટર સંકુલ',
+
+    code: 'GNP-W03',
+
+    type: 'urban',
+
+    center: { lat: 22.7801, lng: 73.6264 },
+
+    radiusM: 3400,
+
+    polygon: [
+
+      [22.7865, 73.6182],
+
+      [22.7862, 73.6335],
+
+      [22.7760, 73.6338],
+
+      [22.7752, 73.6242],
+
+      [22.7818, 73.6182],
+
+    ],
+
+    routeId: 'route_godhra_north',
+
+    inspectorId: 'staff_inspector_02',
+
+    inspectorName: 'Manish Baria (Inspector)',
+
+    inspectorPhone: '+91 94260 12342',
+
+    escalationTo: 'staff_chief_officer',
+
+    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
+
+    escalationPhone: '+91 94260 99001',
+
+  },
+
+  {
+
+    id: 'ward_godhra_04',
+
+    name: 'Ward 4 - Vavdi Road & Bamroli Swachhata Zone',
+
+    nameGu: 'વોર્ડ ૪ - વાવડી રોડ અને બામરોલી ઝોન',
+
+    code: 'GNP-W04',
+
+    type: 'urban',
+
+    center: { lat: 22.7680, lng: 73.6080 },
+
+    radiusM: 3300,
+
+    polygon: [
+
+      [22.7735, 73.6095],
+
+      [22.7725, 73.6145],
+
+      [22.7660, 73.6175],
+
+      [22.7610, 73.6120],
+
+      [22.7635, 73.6015],
+
+      [22.7710, 73.6025],
+
+    ],
+
+    routeId: 'route_godhra_south',
+
+    inspectorId: 'staff_inspector_02',
+
+    inspectorName: 'Manish Baria (Inspector)',
+
+    inspectorPhone: '+91 94260 12342',
+
+    escalationTo: 'staff_chief_officer',
+
+    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
+
+    escalationPhone: '+91 94260 99001',
+
+  },
+
+  {
+
+    id: 'ward_godhra_05',
+
+    name: 'Ward 5 - Lunawada Road & Ankleshwar Highway',
+
+    nameGu: 'વોર્ડ ૫ - લુણાવાડા રોડ હાઇવે ઝોન',
+
+    code: 'GNP-W05',
+
+    type: 'urban',
+
+    center: { lat: 22.7850, lng: 73.6050 },
+
+    radiusM: 3500,
+
+    polygon: [
+
+      [22.7915, 73.5980],
+
+      [22.7912, 73.6110],
+
+      [22.7812, 73.6105],
+
+      [22.7735, 73.6095],
+
+      [22.7710, 73.6025],
+
+      [22.7790, 73.5975],
+
+    ],
+
+    routeId: 'route_godhra_south',
+
+    inspectorId: 'staff_inspector_03',
+
+    inspectorName: 'Kirit Rathod (Inspector)',
+
+    inspectorPhone: '+91 94260 12343',
+
+    escalationTo: 'staff_chief_officer',
+
+    escalationName: 'Smt. Vaishali Patel (Chief Officer, GNP)',
+
+    escalationPhone: '+91 94260 99001',
+
+  },
+
+  {
+
+    id: 'ward_rural_bhamaiya',
+
+    name: 'Bhamaiya Gram Panchayat',
+
+    nameGu: 'ભામાઇયા ગ્રામ પંચાયત',
+
+    code: 'GP-BHAM',
+
+    type: 'rural',
+
+    center: { lat: 22.7550, lng: 73.6300 },
+
+    radiusM: 3800,
+
+    polygon: [
+
+      [22.7650, 73.6260],
+
+      [22.7640, 73.6420],
+
+      [22.7440, 73.6410],
+
+      [22.7450, 73.6210],
+
+      [22.7600, 73.6220],
+
+    ],
+
+    routeId: 'route_panchmahal_rural',
+
+    inspectorId: 'staff_talati_01',
+
+    inspectorName: 'D. M. Patel (Talati-cum-Mantri)',
+
+    inspectorPhone: '+91 94260 55001',
+
+    escalationTo: 'staff_tdo_godhra',
+
+    escalationName: 'Shri M. K. Solanki (TDO Godhra)',
+
+    escalationPhone: '+91 94260 88002',
+
+  },
+
+  {
+
+    id: 'ward_rural_vavdi',
+
+    name: 'Vavdi Gram Panchayat & Highway Cluster',
+
+    nameGu: 'વાવડી ગ્રામ પંચાયત અને હાઇવે ક્લસ્ટર',
+
+    code: 'GP-VAVDI',
+
+    type: 'rural',
+
+    center: { lat: 22.7620, lng: 73.5850 },
+
+    radiusM: 3500,
+
+    polygon: [
+
+      [22.7750, 73.5700],
+
+      [22.7740, 73.5960],
+
+      [22.7550, 73.5980],
+
+      [22.7520, 73.5720],
+
+    ],
+
+    routeId: 'route_panchmahal_rural',
+
+    inspectorId: 'staff_talati_03',
+
+    inspectorName: 'H. P. Patel (Talati-cum-Mantri)',
+
+    inspectorPhone: '+91 94260 55003',
+
+    escalationTo: 'staff_tdo_godhra',
+
+    escalationName: 'Shri M. K. Solanki (TDO Godhra)',
+
+    escalationPhone: '+91 94260 88002',
+
+  },
+
+  {
+
+    id: 'ward_rural_tuwa',
+
+    name: 'Tuwa Gram Panchayat & Kund Area',
+
+    nameGu: 'ટુવા ગ્રામ પંચાયત કુંડ વિસ્તાર',
+
+    code: 'GP-TUWA',
+
+    type: 'rural',
+
+    center: { lat: 22.7980, lng: 73.5500 },
+
+    radiusM: 3600,
+
+    polygon: [
+
+      [22.8120, 73.5350],
+
+      [22.8100, 73.5650],
+
+      [22.7850, 73.5680],
+
+      [22.7860, 73.5380],
+
+    ],
+
+    routeId: 'route_panchmahal_rural',
+
+    inspectorId: 'staff_talati_02',
+
+    inspectorName: 'S. N. Joshi (Talati-cum-Mantri)',
+
+    inspectorPhone: '+91 94260 55002',
+
+    escalationTo: 'staff_tdo_godhra',
+
+    escalationName: 'Shri M. K. Solanki (TDO Godhra)',
+
+    escalationPhone: '+91 94260 88002',
+
+  }
+
+];
+
+
+
+export const SEED_ROUTES: Route[] = [
+
+  {
+
+    id: 'route_godhra_north',
+
+    name: 'Godhra North Urban Corridor (Ward 1 -> Ward 2 -> Ward 3)',
+
+    wardIds: ['ward_godhra_01', 'ward_godhra_02', 'ward_godhra_03'],
+
+    scheduledStartTime: '07:30',
+
+  },
+
+  {
+
+    id: 'route_godhra_south',
+
+    name: 'Godhra South Arterial (Ward 4 -> Ward 5)',
+
+    wardIds: ['ward_godhra_04', 'ward_godhra_05'],
+
+    scheduledStartTime: '08:00',
+
+  },
+
+  {
+
+    id: 'route_panchmahal_rural',
+
+    name: 'Panchmahal Gram Swachhata Circuit (Bhamaiya -> Tuwa -> Vavdi)',
+
+    wardIds: ['ward_rural_bhamaiya', 'ward_rural_tuwa', 'ward_rural_vavdi'],
+
+    scheduledStartTime: '08:30',
+
+  }
+
+];
+
+
+
+export const SEED_VANS: Van[] = [
+
+  {
+
+    id: 'van_gj17_ga_1001',
+
+    plateNo: 'GJ-17-GA-1001',
+
+    routeId: 'route_godhra_north',
+
+    status: 'on_shift',
+
+    lastLocation: {
+
+      lat: 22.7735,
+
+      lng: 73.6165,
+
+      updatedAt: new Date().toISOString(),
+
+      speedKmph: 18,
+
+    },
+
+    currentTripId: 'trip_20261029_001',
+
+    batteryPct: 88,
+
+    driverName: 'Bharatbhai Solanki',
+
+    driverPhone: '+91 98980 11223',
+
+  },
+
+  {
+
+    id: 'van_gj17_ga_1002',
+
+    plateNo: 'GJ-17-GA-1002',
+
+    routeId: 'route_godhra_south',
+
+    status: 'on_shift',
+
+    lastLocation: {
+
+      lat: 22.7695,
+
+      lng: 73.6065,
+
+      updatedAt: new Date().toISOString(),
+
+      speedKmph: 14,
+
+    },
+
+    currentTripId: 'trip_20261029_002',
+
+    batteryPct: 76,
+
+    driverName: 'Rameshbhai Vankar',
+
+    driverPhone: '+91 98980 44556',
+
+  },
+
+  {
+
+    id: 'van_gj17_ga_1003',
+
+    plateNo: 'GJ-17-GA-1003',
+
+    routeId: 'route_panchmahal_rural',
+
+    status: 'on_shift',
+
+    lastLocation: {
+
+      lat: 22.7560,
+
+      lng: 73.6280,
+
+      updatedAt: new Date().toISOString(),
+
+      speedKmph: 16,
+
+    },
+
+    currentTripId: 'trip_20261029_003',
+
+    batteryPct: 92,
+
+    driverName: 'Nareshbhai Dabhi',
+
+    driverPhone: '+91 98980 77889',
+
+  }
+
+];
+
+
+
+export const SEED_STAFF: Staff[] = [
+
+  {
+
+    id: 'staff_inspector_01',
+
+    authUid: 'uid_insp_01',
+
+    name: 'Rajesh Parmar',
+
+    role: 'inspector',
+
+    wardIds: ['ward_godhra_01', 'ward_godhra_02'],
+
+    talukaId: 'godhra',
+
+    phone: '+91 94260 12341',
+
+  },
+
+  {
+
+    id: 'staff_chief_officer',
+
+    authUid: 'uid_co_01',
+
+    name: 'Smt. Vaishali Patel (Chief Officer)',
+
+    role: 'chief_officer',
+
+    wardIds: ['ward_godhra_01', 'ward_godhra_02', 'ward_godhra_03', 'ward_godhra_04', 'ward_godhra_05'],
+
+    talukaId: 'godhra',
+
+    phone: '+91 94260 99001',
+
+  },
+
+  {
+
+    id: 'staff_tdo_godhra',
+
+    authUid: 'uid_tdo_01',
+
+    name: 'Shri M. K. Solanki (TDO Godhra)',
+
+    role: 'tdo',
+
+    wardIds: ['ward_rural_bhamaiya', 'ward_rural_tuwa', 'ward_rural_vavdi'],
+
+    talukaId: 'godhra',
+
+    phone: '+91 94260 88002',
+
+  },
+
+  {
+
+    id: 'staff_ddo_panchmahal',
+
+    authUid: 'uid_ddo_01',
+
+    name: 'Shri D. K. Raval, IAS (District Development Officer, Panchmahal)',
+
+    role: 'ddo',
+
+    wardIds: [],
+
+    talukaId: 'panchmahal_district',
+
+    phone: '02672-241200',
+
+  }
+
+];
+
+
+
+export const SEED_TIPS: SanitationTip[] = [
+
+  {
+
+    id: 'tip_01',
+
+    icon: 'Recycle',
+
+    badgeGu: 'ભીનો-સૂકો કચરો',
+
+    badgeEn: 'Segregation',
+
+    titleGu: 'લીલો ડબ્બો ભીના કચરા માટે, વાદળી ડબ્બો સૂકા કચરા માટે',
+
+    titleEn: 'Green Bin for Wet Waste, Blue Bin for Dry Waste',
+
+    descGu: 'શાકભાજીના છોતરાં અને બચેલું ભોજન લીલા ડબ્બામાં નાખો. પ્લાસ્ટિક, કાગળ અને બોટલ વાદળી ડબ્બામાં અલગ રાખો.',
+
+    descEn: 'Keep vegetable peels and kitchen waste in the green bin. Put plastic, paper, and glass in the blue dry waste bin.',
+
+    category: 'segregation',
+
+  },
+
+  {
+
+    id: 'tip_02',
+
+    icon: 'Droplets',
+
+    badgeGu: 'ગટર સ્વચ્છતા',
+
+    badgeEn: 'Open Gutters',
+
+    titleGu: 'ખુલ્લી ગટરમાં ક્યારેય પ્લાસ્ટિક કે ઘન કચરો ન ફેંકો',
+
+    titleEn: 'Never Throw Plastic or Solid Trash into Open Gutters',
+
+    descGu: 'ગટરમાં કચરો નાખવાથી પાણી બ્લોક થઈ મચ્છરો અને ડેન્ગ્યુ-મેલેરિયાનો ઉપદ્રવ વધે છે. ચોખ્ખી ગટર એ જ તંદુરસ્તી.',
+
+    descEn: 'Blockages in gutters cause stagnant wastewater, leading to mosquito breeding and dengue/malaria risks.',
+
+    category: 'gutter',
+
+  },
+
+  {
+
+    id: 'tip_03',
+
+    icon: 'BellRing',
+
+    badgeGu: 'વાન સાયરન',
+
+    badgeEn: 'Arrival Alert',
+
+    titleGu: 'વાન નજીક આવે એટલે તરત કચરો તૈયાર રાખો',
+
+    titleEn: 'Keep Bins Ready When the Collection Van Enters Your Ward',
+
+    descGu: 'તમારા મોબાઈલમાં વાન તમારા વિસ્તારથી ૫૦૦ મીટર દૂર હોય ત્યારે તરત એલર્ટ આવશે. શેરીના ખૂણે કચરો ફેંકવાનું ટાળો.',
+
+    descEn: 'Safaai Saathi notifies you as soon as the van is within 500m of your street. Avoid dumping at road corners.',
+
+    category: 'schedule',
+
+  },
+
+  {
+
+    id: 'tip_04',
+
+    icon: 'ShieldAlert',
+
+    badgeGu: 'નાગરિક જાગૃતિ',
+
+    badgeEn: 'Citizen Vigilance',
+
+    titleGu: 'ગંદકી દેખાય તો તરત લાઈવ ફોટો પાડી ફરિયાદ કરો',
+
+    titleEn: 'Spot a Garbage Dump? Report Instantly via Live Camera',
+
+    descGu: 'તમારી ફરિયાદ સીધી વોર્ડ ઇન્સ્પેક્ટર અને ચીફ ઓફિસર સુધી પહોંચે છે. ૨૪ કલાકમાં ન ઉકેલાય તો આપોઆપ એસ્કેલેટ થશે.',
+
+    descEn: 'Geo-tagged complaints route directly to the designated Inspector with 24-hour auto-escalation to Chief Officer.',
+
+    category: 'health',
+
+  }
+
+];
+

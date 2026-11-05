@@ -444,7 +444,7 @@ export class VanSimulationEngine {
         const pSouth = SOUTH_WAYPOINTS[this.southIndex];
         const pRural = RURAL_WAYPOINTS[this.ruralIndex];
 
-        // Update all 3 vans in their respective allotted 2-3 wards
+        // Update single van
         updatedVans = SEED_VANS.map(v => {
           let p = pNorth;
           if (v.routeId === 'route_godhra_south') p = pSouth;

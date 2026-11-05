@@ -799,8 +799,8 @@ export const DEMO_ROUTES: Route[] = [
       "W07"
     ],
     "scheduledStartTime": "07:30",
-    "vanId": "VAN-02",
-    "vanPlate": "GJ-17-GV-2402",
+    "vanId": "VAN-01",
+    "vanPlate": "GJ-17-GV-2401",
     "totalDistanceKm": 2.2,
     "estimatedDuration": "0 h 45 min"
   },
@@ -813,8 +813,8 @@ export const DEMO_ROUTES: Route[] = [
       "W10"
     ],
     "scheduledStartTime": "08:00",
-    "vanId": "VAN-03",
-    "vanPlate": "GJ-17-GV-2403",
+    "vanId": "VAN-01",
+    "vanPlate": "GJ-17-GV-2401",
     "totalDistanceKm": 2.9,
     "estimatedDuration": "0 h 48 min"
   },
@@ -827,8 +827,8 @@ export const DEMO_ROUTES: Route[] = [
       "W13"
     ],
     "scheduledStartTime": "08:30",
-    "vanId": "VAN-04",
-    "vanPlate": "GJ-17-GV-2404",
+    "vanId": "VAN-01",
+    "vanPlate": "GJ-17-GV-2401",
     "totalDistanceKm": 2.4,
     "estimatedDuration": "0 h 46 min"
   },
@@ -840,8 +840,8 @@ export const DEMO_ROUTES: Route[] = [
       "W15"
     ],
     "scheduledStartTime": "09:00",
-    "vanId": "VAN-05",
-    "vanPlate": "GJ-17-GV-2405",
+    "vanId": "VAN-01",
+    "vanPlate": "GJ-17-GV-2401",
     "totalDistanceKm": 3,
     "estimatedDuration": "0 h 36 min"
   },
@@ -852,8 +852,8 @@ export const DEMO_ROUTES: Route[] = [
       "W16"
     ],
     "scheduledStartTime": "09:30",
-    "vanId": "VAN-06",
-    "vanPlate": "GJ-17-GV-2406",
+    "vanId": "VAN-01",
+    "vanPlate": "GJ-17-GV-2401",
     "totalDistanceKm": 0,
     "estimatedDuration": "0 h 12 min"
   }
@@ -875,86 +875,6 @@ export const DEMO_VANS: Van[] = [
     batteryPct: 78,
     driverName: 'Rameshbhai B. Solanki',
     driverPhone: '+91 98251 10001',
-  },
-  {
-    id: 'VAN-02',
-    plateNo: 'GJ-17-GV-2402',
-    routeId: 'RT-GDR-02',
-    status: 'on_shift',
-    lastLocation: {
-      lat: 22.7735,
-      lng: 73.6080,
-      speedKmph: 16,
-      updatedAt: getIsoIST(0, 10, 15, 0),
-    },
-    currentTripId: `TRIP-${getYmdCompact(0)}-02`,
-    batteryPct: 82,
-    driverName: 'Sureshbhai M. Vankar',
-    driverPhone: '+91 98251 10002',
-  },
-  {
-    id: 'VAN-03',
-    plateNo: 'GJ-17-GV-2403',
-    routeId: 'RT-GDR-03',
-    status: 'on_shift',
-    lastLocation: {
-      lat: 22.7680,
-      lng: 73.6050,
-      speedKmph: 15,
-      updatedAt: getIsoIST(0, 10, 14, 0),
-    },
-    currentTripId: `TRIP-${getYmdCompact(0)}-03`,
-    batteryPct: 74,
-    driverName: 'Maheshbhai K. Parmar',
-    driverPhone: '+91 98251 10003',
-  },
-  {
-    id: 'VAN-04',
-    plateNo: 'GJ-17-GV-2404',
-    routeId: 'RT-GDR-04',
-    status: 'on_shift',
-    lastLocation: {
-      lat: 22.7880,
-      lng: 73.6210,
-      speedKmph: 17,
-      updatedAt: getIsoIST(0, 10, 16, 0),
-    },
-    currentTripId: `TRIP-${getYmdCompact(0)}-04`,
-    batteryPct: 85,
-    driverName: 'Dineshbhai P. Baria',
-    driverPhone: '+91 98251 10004',
-  },
-  {
-    id: 'VAN-05',
-    plateNo: 'GJ-17-GV-2405',
-    routeId: 'RT-GDR-05',
-    status: 'on_shift',
-    lastLocation: {
-      lat: 22.7950,
-      lng: 73.6020,
-      speedKmph: 15,
-      updatedAt: getIsoIST(0, 10, 12, 0),
-    },
-    currentTripId: `TRIP-${getYmdCompact(0)}-05`,
-    batteryPct: 90,
-    driverName: 'Pravinbhai R. Patel',
-    driverPhone: '+91 98251 10005',
-  },
-  {
-    id: 'VAN-06',
-    plateNo: 'GJ-17-GV-2406',
-    routeId: 'RT-GDR-06',
-    status: 'on_shift',
-    lastLocation: {
-      lat: 22.7600,
-      lng: 73.6250,
-      speedKmph: 16,
-      updatedAt: getIsoIST(0, 10, 10, 0),
-    },
-    currentTripId: `TRIP-${getYmdCompact(0)}-06`,
-    batteryPct: 80,
-    driverName: 'Kamleshbhai S. Chauhan',
-    driverPhone: '+91 98251 10006',
   },
 ];
 
