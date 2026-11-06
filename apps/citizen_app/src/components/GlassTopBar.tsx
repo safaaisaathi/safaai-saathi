@@ -203,26 +203,37 @@ export const GlassTopBar: React.FC<GlassTopBarProps> = ({
             </a>
 
             {/* Option 3: Download Android APK Build */}
-            <a
-              href="https://github.com/tejashripatil3708/safaai-saathi/actions"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full p-3.5 rounded-2xl bg-[#E4F1DF] dark:bg-[#1A3324] hover:bg-[#d8eed2] text-[#14201A] dark:text-[#EAF2E6] flex items-center gap-3 active:scale-[0.98] transition border border-[#B5CF8A] dark:border-[#2A3B31]"
-            >
-              <div className="w-10 h-10 rounded-xl bg-[#1B7A3F] text-white flex items-center justify-center shrink-0 shadow-sm">
-                <Smartphone className="w-5 h-5" />
-              </div>
-              <div className="text-left flex-1 min-w-0">
-                <div className="text-xs font-bold leading-tight flex items-center gap-1.5">
-                  <span>{lang === 'gu' ? 'Android APK ડાઉનલોડ' : 'Download Android APK'}</span>
-                  <span className="text-[9px] bg-[#1B7A3F] text-white px-1.5 py-0.5 rounded font-mono font-bold">APK</span>
+            <div className="flex flex-col gap-1.5">
+              <a
+                href="./Safaai-Saathi.apk"
+                download="Safaai-Saathi.apk"
+                className="w-full p-3.5 rounded-2xl bg-[#E4F1DF] dark:bg-[#1A3324] hover:bg-[#d8eed2] text-[#14201A] dark:text-[#EAF2E6] flex items-center gap-3 active:scale-[0.98] transition border border-[#B5CF8A] dark:border-[#2A3B31]"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#1B7A3F] text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <Smartphone className="w-5 h-5" />
                 </div>
-                <div className="text-[10px] text-[#566259] dark:text-[#9DB0A2] mt-0.5">
-                  {lang === 'gu' ? 'GitHub Actions દ્વારા બનેલ Android ઇન્સ્ટોલર' : 'Direct APK builds from GitHub Actions CI'}
+                <div className="text-left flex-1 min-w-0">
+                  <div className="text-xs font-bold leading-tight flex items-center gap-1.5">
+                    <span>{lang === 'gu' ? 'Android APK ડાઉનલોડ' : 'Download Android APK'}</span>
+                    <span className="text-[9px] bg-[#1B7A3F] text-white px-1.5 py-0.5 rounded font-mono font-bold">APK</span>
+                  </div>
+                  <div className="text-[10px] text-[#566259] dark:text-[#9DB0A2] mt-0.5">
+                    {lang === 'gu' ? 'સીધું Android ઇન્સ્ટોલર (.apk)' : 'Direct Android installer (.apk)'}
+                  </div>
                 </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-[#1B7A3F]" />
-            </a>
+                <Download className="w-4 h-4 text-[#1B7A3F]" />
+              </a>
+
+              <a
+                href="https://github.com/safaaisaathi/userapp/actions"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-[#1B7A3F] dark:text-[#52C582] hover:underline flex items-center justify-center gap-1 py-1 font-medium"
+              >
+                <span>{lang === 'gu' ? 'GitHub Actions CI બિલ્ડ' : 'GitHub Actions CI Builds'}</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
 
             {/* Hint for browser menu install */}
             <div className="bg-[#E9F1E6]/60 dark:bg-[#1A281F] p-3 rounded-xl text-[11px] text-[#566259] dark:text-[#9DB0A2] leading-relaxed">

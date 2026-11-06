@@ -1,13 +1,17 @@
-const CACHE_NAME = 'safaai-saathi-v12';
+const CACHE_NAME = 'safaai-saathi-v13';
 
 const PRECACHE_ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './favicon.ico',
   './logo.png',
+  './logo.svg',
   './favicon.svg',
+  './icon.svg',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
